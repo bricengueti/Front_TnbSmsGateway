@@ -1,0 +1,73 @@
+@use 'tokens' as t;
+
+.ui-metric {
+  background: t.$color-surface;
+  border-radius: t.$radius-xl;
+  padding: t.$space-lg;
+  box-shadow: t.$shadow-sm;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-sm;
+  min-width: 0;
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__icon {
+    width: 36px; height: 36px;
+    border-radius: t.$radius-md;
+    background: t.$color-surface-alt;
+    color: t.$color-text-secondary;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+
+  &__trend {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    color: t.$color-success;
+    background: t.$color-success-bg;
+    padding: 2px t.$space-sm;
+    border-radius: t.$radius-full;
+
+    .material-symbols-outlined { font-size: 14px; }
+
+    &--down { color: t.$color-error; background: t.$color-error-bg; }
+    &--flat { color: t.$color-success; background: t.$color-success-bg; }
+  }
+
+  &__label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: t.$color-text-secondary;
+  }
+
+  &__value-row { display: flex; align-items: baseline; gap: t.$space-xs; }
+  &__value { font-family: t.$font-heading; font-size: t.$fs-headline-lg; font-weight: 700; }
+  &__unit { font-size: t.$fs-body-sm; color: t.$color-text-secondary; }
+
+  // --- Tons ---
+  &--primary .ui-metric__icon { background: t.$color-primary-light; color: t.$color-primary; }
+  &--success .ui-metric__icon { background: t.$color-success-bg; color: t.$color-success; }
+  &--warning .ui-metric__icon { background: t.$color-warning-bg; color: t.$color-warning; }
+  &--error   .ui-metric__icon { background: t.$color-error-bg; color: t.$color-error; }
+
+  // --- Carte mise en avant (fond plein) ---
+  &--emphasis {
+    background: t.$color-primary;
+    color: #fff;
+
+    .ui-metric__label { color: rgba(255,255,255,0.75); }
+    .ui-metric__icon { background: rgba(255,255,255,0.15); color: #fff; }
+    .ui-metric__unit { color: rgba(255,255,255,0.75); }
+    .ui-metric__trend { background: rgba(255,255,255,0.18); color: #fff; }
+  }
+}

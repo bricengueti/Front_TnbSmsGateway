@@ -1,0 +1,67 @@
+<div class="page">
+  <div class="page__head">
+    <div>
+      <h1><span class="page__admin-tag">ADMIN</span> Clés API Globales</h1>
+      <p>Consultez et révoquez les clés API émises par l'ensemble des utilisateurs.</p>
+    </div>
+  </div>
+
+  <div class="page__metrics">
+    <app-ui-metric-card uiReveal label="Clés actives" [value]="activeCount.toString()" [unit]="'/ ' + keys().length" icon="key" tone="primary" />
+  </div>
+
+  <div class="page__card" uiReveal>
+    <div class="page__card-head">
+      <div class="page__field admin-keys-search">
+        <input type="text" placeholder="Rechercher par utilisateur ou nom de clé..." [ngModel]="search()" (ngModelChange)="search.set($event)" />
+      </div>
+      <div class="plan-filters">
+        <button type="button" class="plan-filters__btn" [class.plan-filters__btn--active]="routingFilter() === 'ALL'" (click)="setFilter('ALL')">Toutes</button>
+        <button type="button" class="plan-filters__btn" [class.plan-filters__btn--active]="routingFilter() === 'OWN_DEVICES'" (click)="setFilter('OWN_DEVICES')">OWN_DEVICES</button>
+        <button type="button" class="plan-filters__btn" [class.plan-filters__btn--active]="routingFilter() === 'MANAGED_POOL'" (click)="setFilter('MANAGED_POOL')">MANAGED_POOL</button>
+      </div>
+    </div>
+
+    <div class="page__table-wrap">
+      <table class="page__table">
+        <thead>
+          <tr>
+            <th>Nom de la clé</th>
+            <th>Utilisateur</th>
+            <th>Préfixe</th>
+            <th>Routage</th>
+            <th>Statut</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (k of filteredKeys; track k.id) {
+            <tr>
+              <td><strong>{{ k.label }}</strong></td>
+              <td>
+                <div class="admin-keys-owner">
+                  <app-ui-avatar [name]="k.ownerEmail" size="sm" />
+                  <span>{{ k.ownerEmail }}</span>
+                </div>
+              </td>
+              <td class="page__table-mono">{{ k.keyPrefix }}</td>
+              <td><app-ui-badge [tone]="k.routingMode === 'MANAGED_POOL' ? 'accent' : 'neutral'">{{ k.routingMode }}</app-ui-badge></td>
+              <td>
+                <app-ui-badge [tone]="k.revoked ? 'neutral' : 'success'">
+                  {{ k.revoked ? 'Révoquée' : 'Active' }}
+                </app-ui-badge>
+              </td>
+              <td class="page__table-actions">
+                @if (!k.revoked) {
+                  <button type="button" class="page__icon-btn page__icon-btn--danger" title="Révoquer" (click)="revoke(k.id)">
+                    <span class="material-symbols-outlined">block</span>
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

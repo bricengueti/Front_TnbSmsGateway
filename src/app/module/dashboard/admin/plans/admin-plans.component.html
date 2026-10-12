@@ -1,0 +1,108 @@
+<div class="page">
+  <div class="page__head">
+    <div>
+      <h1><span class="page__admin-tag">ADMIN</span> Gestion des Forfaits</h1>
+      <p>Configurez les packs POOL (crédits SMS) et PERSONAL (plafond de devices). Chaque pack a une durée de validité en mois.</p>
+    </div>
+    <app-ui-button variant="primary" icon="add" iconPosition="left" (click)="openCreate()">Créer un pack</app-ui-button>
+  </div>
+
+  <div class="page__metrics">
+    <app-ui-metric-card uiReveal label="Packs actifs" [value]="activeCount.toString()" [unit]="'/ ' + plans().length" icon="inventory_2" tone="primary" />
+  </div>
+
+  <div class="page__card" uiReveal>
+    <div class="page__card-head">
+      <h2>Catalogue des Offres</h2>
+      <div class="plan-filters">
+        <button type="button" class="plan-filters__btn" [class.plan-filters__btn--active]="activeFilter() === 'ALL'" (click)="setFilter('ALL')">Tous</button>
+        <button type="button" class="plan-filters__btn" [class.plan-filters__btn--active]="activeFilter() === 'POOL'" (click)="setFilter('POOL')">POOL</button>
+        <button type="button" class="plan-filters__btn" [class.plan-filters__btn--active]="activeFilter() === 'PERSONAL'" (click)="setFilter('PERSONAL')">PERSONAL</button>
+      </div>
+    </div>
+
+    <div class="page__table-wrap">
+      <table class="page__table">
+        <thead>
+          <tr>
+            <th>Nom du pack</th>
+            <th>Type</th>
+            <th>Prix (XAF)</th>
+            <th>Durée</th>
+            <th>Limite</th>
+            <th>Statut</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of plans(); track p.id) {
+            <tr>
+              <td>
+                <strong>{{ p.name }}</strong>
+                <span class="plan-desc">{{ p.description }}</span>
+              </td>
+              <td><app-ui-badge [tone]="p.type === 'POOL' ? 'info' : 'accent'">{{ p.type }}</app-ui-badge></td>
+              <td><strong>{{ p.price | number:'1.0-0':'fr-FR' }}</strong></td>
+              <td>{{ p.validityMonths }} mois</td>
+              <td>
+                @if (p.type === 'POOL') {
+                  {{ p.quantitySms | number:'1.0-0':'fr-FR' }} SMS
+                } @else {
+                  {{ p.quantityDevices }} devices max
+                }
+              </td>
+              <td><app-ui-badge [tone]="p.active ? 'success' : 'neutral'">{{ p.active ? 'Actif' : 'Inactif' }}</app-ui-badge></td>
+              <td class="page__table-actions">
+                <app-ui-toggle-switch
+                  [checked]="p.active"
+                  [ariaLabel]="(p.active ? 'Désactiver' : 'Activer') + ' ' + p.name"
+                  (checkedChange)="toggleActive(p.id)" />
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-ui-modal [(open)]="createModalOpen" title="Créer un nouveau pack" width="sm">
+  <div class="page__form-grid">
+    <div class="page__field">
+      <label for="plan-name">Nom du pack</label>
+      <input id="plan-name" type="text" placeholder="ex: Enterprise Pool" [(ngModel)]="form.name" />
+    </div>
+    <div class="page__field">
+      <label for="plan-desc">Description</label>
+      <input id="plan-desc" type="text" placeholder="ex: Haut volume" [(ngModel)]="form.description" />
+    </div>
+    <div class="page__field">
+      <label for="plan-type">Type</label>
+      <select id="plan-type" [(ngModel)]="form.type">
+        <option value="POOL">POOL — crédits SMS</option>
+        <option value="PERSONAL">PERSONAL — plafond de devices</option>
+      </select>
+    </div>
+    <div class="page__field">
+      <label for="plan-price">Prix (XAF)</label>
+      <input id="plan-price" type="number" [(ngModel)]="form.price" />
+    </div>
+    <div class="page__field">
+      <label for="plan-validity">Durée de validité (mois)</label>
+      <input id="plan-validity" type="number" min="1" placeholder="ex: 1, 3, 12" [(ngModel)]="form.validityMonths" />
+      <span class="page__field-hint">Le quota est valable pour toute cette période, sans reset mensuel.</span>
+    </div>
+    @if (form.type === 'POOL') {
+      <div class="page__field">
+        <label for="plan-sms-limit">Quota SMS total (pour toute la période)</label>
+        <input id="plan-sms-limit" type="number" placeholder="Laisser vide = illimité" [(ngModel)]="form.quantitySms" />
+      </div>
+    } @else {
+      <div class="page__field">
+        <label for="plan-max-devices">Nombre de devices max</label>
+        <input id="plan-max-devices" type="number" placeholder="Laisser vide = illimité" [(ngModel)]="form.quantityDevices" />
+      </div>
+    }
+    <app-ui-button variant="primary" [fullWidth]="true" (click)="submitCreate()">Créer le pack</app-ui-button>
+  </div>
+</app-ui-modal>

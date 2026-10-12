@@ -1,0 +1,24 @@
+@use 'tokens' as t;
+
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: t.$space-xs;
+  padding: 2px t.$space-sm;
+  font-family: t.$font-body;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  border-radius: t.$radius-sm;
+  line-height: 1.6;
+
+  &--pill { border-radius: t.$radius-full; }
+
+  &--success { background: t.$color-success-bg; color: t.$color-success; }
+  &--warning { background: t.$color-warning-bg; color: t.$color-warning; }
+  &--error   { background: t.$color-error-bg; color: t.$color-error; }
+  &--info    { background: t.$color-info-bg; color: t.$color-info; }
+  &--accent  { background: t.$color-accent-light; color: t.$color-accent-dark; }
+  &--neutral { background: t.$color-surface-alt; color: t.$color-text-secondary; }
+}

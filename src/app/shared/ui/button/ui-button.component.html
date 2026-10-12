@@ -1,0 +1,13 @@
+<button
+  [type]="type"
+  [disabled]="disabled"
+  class="ui-btn"
+  [ngClass]="['ui-btn--' + variant, 'ui-btn--' + size, fullWidth ? 'ui-btn--full' : '']">
+  @if (icon && iconPosition === 'left') {
+    <span class="material-symbols-outlined ui-btn__icon">{{ icon }}</span>
+  }
+  <span class="ui-btn__label"><ng-content /></span>
+  @if (icon && iconPosition === 'right') {
+    <span class="material-symbols-outlined ui-btn__icon">{{ icon }}</span>
+  }
+</button>

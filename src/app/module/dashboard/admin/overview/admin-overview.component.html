@@ -1,0 +1,75 @@
+<div class="page">
+  <div class="page__head">
+    <div>
+      <h1><span class="page__admin-tag">ADMIN</span> Aperçu Global</h1>
+      <p>Vue consolidée de l'activité de toute la plateforme TNB SmsGateway.</p>
+    </div>
+  </div>
+
+  <div class="page__metrics">
+    <app-ui-metric-card uiReveal label="Utilisateurs" [value]="(stats()?.totalUsers ?? 0).toString()" [unit]="(stats()?.activeUsers ?? 0) + ' actifs · ' + (stats()?.suspendedUsers ?? 0) + ' suspendus'" icon="group" tone="primary" />
+    <app-ui-metric-card uiReveal [uiRevealDelay]="80" label="SMS envoyés (total)" [value]="(stats()?.totalMessagesSent ?? 0) | number:'1.0-0':'fr-FR'" icon="chat" tone="default" />
+    <app-ui-metric-card uiReveal [uiRevealDelay]="160" label="Devices en ligne" [value]="(stats()?.onlineDevices ?? 0).toString()" [unit]="'/ ' + (stats()?.totalDevices ?? 0)" icon="router" tone="success" />
+    <app-ui-metric-card uiReveal [uiRevealDelay]="240" label="Packs actifs" [value]="(stats()?.totalPlans ?? 0).toString()" icon="inventory_2" [emphasis]="true" />
+  </div>
+
+  <div class="admin-overview-grid">
+    <div class="page__card" uiReveal>
+      <div class="page__card-head">
+        <div>
+          <h2>Répartition de la flotte</h2>
+          <p>Vue directe de GET /admin/stats.</p>
+        </div>
+      </div>
+
+      <div class="breakdown-grid">
+        <div class="breakdown-item">
+          <span class="breakdown-item__label">Devices personnels</span>
+          <span class="breakdown-item__value">{{ stats()?.personalDevices }}</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-item__label">Devices pool</span>
+          <span class="breakdown-item__value">{{ stats()?.poolDevices }}</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-item__label">Devices révoqués</span>
+          <span class="breakdown-item__value">{{ stats()?.revokedDevices }}</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-item__label">Clés — OWN_DEVICES</span>
+          <span class="breakdown-item__value">{{ stats()?.ownDevicesKeys }}</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-item__label">Clés — MANAGED_POOL</span>
+          <span class="breakdown-item__value">{{ stats()?.managedPoolKeys }}</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-item__label">Clés révoquées</span>
+          <span class="breakdown-item__value">{{ stats()?.revokedApiKeys }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page__card" uiReveal [uiRevealDelay]="100">
+      <div class="page__card-head">
+        <h2>Devices hors ligne</h2>
+      </div>
+      <p class="page__field-hint">Donnée réelle : GET /admin/devices?status=OFFLINE</p>
+      <div class="alert-list">
+        @for (d of offlineDevices(); track d.id) {
+          <a routerLink="/dashboard/admin/devices" class="alert-list__item">
+            <span class="material-symbols-outlined alert-list__icon">smartphone</span>
+            <div class="alert-list__text">
+              <strong>{{ d.label }}</strong>
+              <span>{{ d.ownerEmail }}</span>
+            </div>
+            <app-ui-badge tone="error">{{ d.type }}</app-ui-badge>
+          </a>
+        }
+        @if (!offlineDevices().length) {
+          <p class="page__field-hint">Aucun device hors ligne actuellement.</p>
+        }
+      </div>
+    </div>
+  </div>
+</div>

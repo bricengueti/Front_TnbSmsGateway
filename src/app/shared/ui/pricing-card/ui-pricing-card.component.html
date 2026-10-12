@@ -1,0 +1,37 @@
+<div class="ui-pricing" [class.ui-pricing--primary]="emphasis === 'primary'">
+  @if (popular) {
+    <span class="ui-pricing__badge">Populaire</span>
+  }
+  <div class="ui-pricing__head">
+    <div>
+      <h3 class="ui-pricing__name">{{ name }}</h3>
+      <p class="ui-pricing__subtitle">{{ subtitle }}</p>
+    </div>
+    <div class="ui-pricing__price">
+      <span class="ui-pricing__amount">{{ price }}</span>
+      <span class="ui-pricing__period">
+        {{ period }}
+        @if (strikePrice) {
+          <span class="ui-pricing__strike">{{ strikePrice }} {{ period.split('/')[0] }}</span>
+        }
+      </span>
+    </div>
+  </div>
+
+  @if (features.length) {
+    <ul class="ui-pricing__features">
+      @for (f of features; track f) {
+        <li>
+          <span class="material-symbols-outlined">check_circle</span>
+          {{ f }}
+        </li>
+      }
+    </ul>
+  }
+
+  <div class="ui-pricing__cta">
+    <app-ui-button [variant]="emphasis === 'primary' ? 'inverse' : 'secondary'" [fullWidth]="true">
+      {{ ctaLabel }}
+    </app-ui-button>
+  </div>
+</div>

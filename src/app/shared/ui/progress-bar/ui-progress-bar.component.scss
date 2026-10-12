@@ -1,0 +1,22 @@
+@use 'tokens' as t;
+
+.ui-progress {
+  width: 100%;
+  background: t.$color-surface-alt;
+  border-radius: t.$radius-full;
+  overflow: hidden;
+
+  &--sm { height: 6px; }
+  &--md { height: 8px; }
+
+  &__fill {
+    height: 100%;
+    border-radius: t.$radius-full;
+    transition: width 500ms cubic-bezier(0.16, 1, 0.3, 1);
+
+    &--primary { background: t.$color-primary; }
+    &--success { background: t.$color-success; }
+    &--warning { background: t.$color-accent; }
+    &--error   { background: t.$color-error; }
+  }
+}

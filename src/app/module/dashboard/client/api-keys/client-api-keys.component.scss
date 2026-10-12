@@ -1,0 +1,42 @@
+@use 'tokens' as t;
+
+.reveal-warning {
+  display: flex;
+  align-items: center;
+  gap: t.$space-sm;
+  background: t.$color-warning-bg;
+  color: #7A4E07;
+  padding: t.$space-md;
+  border-radius: t.$radius-md;
+  font-size: t.$fs-body-sm;
+  font-weight: 600;
+
+  .material-symbols-outlined { font-size: 20px; color: t.$color-warning; flex-shrink: 0; }
+}
+
+.reveal-key {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: t.$space-md;
+  background: t.$color-code-bg;
+  border-radius: t.$radius-md;
+  padding: t.$space-md;
+
+  code {
+    font-family: t.$font-mono;
+    font-size: 13px;
+    color: t.$color-code-text;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    color: t.$color-silver;
+    display: flex;
+    flex-shrink: 0;
+    &:hover { color: #fff; }
+  }
+}

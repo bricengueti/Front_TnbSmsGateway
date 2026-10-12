@@ -1,0 +1,122 @@
+<section class="rate section">
+  <div class="container">
+
+    <div class="rate__head">
+      <span class="eyebrow">Tarification</span>
+      <h1>Un tarif pour chaque façon d'envoyer</h1>
+      <p>Choisissez le pool de crédits partagé ou connectez vos propres appareils. Aucun engagement, aucune surprise.</p>
+    </div>
+
+    <div class="rate__toggle" role="tablist">
+      <span class="rate__toggle-thumb" [class.rate__toggle-thumb--right]="billingCycle() === 'yearly'"></span>
+      <button
+        type="button"
+        role="tab"
+        [attr.aria-selected]="billingCycle() === 'monthly'"
+        [class.rate__toggle-btn--active]="billingCycle() === 'monthly'"
+        class="rate__toggle-btn"
+        (click)="setBilling('monthly')">
+        Mensuel
+      </button>
+      <button
+        type="button"
+        role="tab"
+        [attr.aria-selected]="billingCycle() === 'yearly'"
+        [class.rate__toggle-btn--active]="billingCycle() === 'yearly'"
+        class="rate__toggle-btn"
+        (click)="setBilling('yearly')">
+        Annuel <span class="rate__toggle-badge">-20%</span>
+      </button>
+    </div>
+
+    <div class="rate__columns">
+      <!-- Pool partagé -->
+      <div class="rate__column">
+        <div class="rate__column-head">
+          <span class="material-symbols-outlined">cell_tower</span>
+          <h2>Pool Partagé</h2>
+        </div>
+        <p class="rate__column-desc">Paiement à l'usage (crédits SMS) avec routage optimisé. Idéal pour les notifications et OTP.</p>
+
+        @for (plan of poolPlans; track plan.name) {
+          <app-ui-pricing-card
+            [name]="plan.name"
+            [subtitle]="plan.subtitle"
+            [price]="displayPrice(plan).amount"
+            [period]="displayPrice(plan).period"
+            [strikePrice]="displayPrice(plan).strike"
+            [popular]="!!plan.popular"
+            [emphasis]="plan.emphasis || 'default'"
+            [ctaLabel]="plan.ctaLabel"
+            [features]="plan.features || []" />
+        }
+      </div>
+
+      <!-- BYOD -->
+      <div class="rate__column">
+        <div class="rate__column-head rate__column-head--teal">
+          <span class="material-symbols-outlined">smartphone</span>
+          <h2>Devices Personnels (BYOD)</h2>
+        </div>
+        <p class="rate__column-desc">Connectez vos propres téléphones/modems. Envoi illimité via vos cartes SIM locales.</p>
+
+        @for (plan of byodPlans; track plan.name) {
+          <app-ui-pricing-card
+            [name]="plan.name"
+            [subtitle]="plan.subtitle"
+            [price]="displayPrice(plan).amount"
+            [period]="displayPrice(plan).period"
+            [strikePrice]="displayPrice(plan).strike"
+            [popular]="!!plan.popular"
+            [emphasis]="plan.emphasis || 'default'"
+            [ctaLabel]="plan.ctaLabel"
+            [features]="plan.features || []" />
+        }
+      </div>
+    </div>
+
+    <!-- Tableau comparatif -->
+    <div class="rate__compare">
+      <h2>Comparaison des fonctionnalités</h2>
+      <div class="rate__table-wrap">
+        <table class="rate__table">
+          <thead>
+            <tr>
+              <th>Fonctionnalité</th>
+              <th class="rate__table-center">Pool Partagé</th>
+              <th class="rate__table-center">BYOD</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of comparison; track row.feature) {
+              <tr>
+                <td class="rate__table-feature">{{ row.feature }}</td>
+                <td class="rate__table-center">
+                  @if (row.poolIcon) {
+                    <span class="material-symbols-outlined" [class.is-check]="row.poolIcon === 'check'">{{ row.poolIcon }}</span>
+                  } @else {
+                    {{ row.pool }}
+                  }
+                </td>
+                <td class="rate__table-center">
+                  @if (row.byodIcon) {
+                    <span class="material-symbols-outlined" [class.is-check]="row.byodIcon === 'check'">{{ row.byodIcon }}</span>
+                  } @else {
+                    {{ row.byod }}
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="rate__faq">
+      <h2>Questions fréquentes</h2>
+      <app-ui-faq-accordion [items]="faqItems" />
+    </div>
+
+  </div>
+</section>

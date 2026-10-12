@@ -1,0 +1,59 @@
+@use 'tokens' as t;
+
+.ui-step {
+  position: relative;
+  background: t.$color-surface;
+  border-radius: t.$radius-xl;
+  padding: t.$space-xl;
+  box-shadow: t.$shadow-sm;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-md;
+  overflow: hidden;
+  transition: box-shadow t.$transition-base;
+
+  &:hover { box-shadow: t.$shadow-md; }
+
+  &__icon {
+    width: 56px; height: 56px;
+    border-radius: t.$radius-full;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: t.$shadow-sm;
+  }
+
+  &__number {
+    position: absolute;
+    top: t.$space-lg; right: t.$space-lg;
+    font-family: t.$font-heading;
+    font-size: 56px;
+    font-weight: 800;
+    opacity: 0.08;
+    line-height: 1;
+    pointer-events: none;
+    transition: opacity 220ms ease, color 220ms ease;
+  }
+
+  &:hover &__number {
+    opacity: 0.16;
+  }
+
+  &__title {
+    font-size: t.$fs-headline-sm;
+    line-height: t.$lh-headline-sm;
+    font-weight: 600;
+  }
+
+  &__desc {
+    font-size: t.$fs-body-sm;
+    line-height: t.$lh-body-sm;
+    color: t.$color-text-secondary;
+  }
+
+  &--primary .ui-step__icon { background: t.$color-primary-light; color: t.$color-primary; }
+  &--accent  .ui-step__icon { background: t.$color-accent-light; color: t.$color-accent-dark; }
+  &--teal    .ui-step__icon { background: rgba(27, 94, 90, 0.1); color: t.$color-teal; }
+
+  &--primary:hover &__number { color: t.$color-primary; }
+  &--accent:hover  &__number { color: t.$color-accent; }
+  &--teal:hover    &__number { color: t.$color-teal; }
+}

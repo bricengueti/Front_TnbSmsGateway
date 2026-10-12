@@ -1,0 +1,47 @@
+@use 'tokens' as t;
+
+.fleet-imei { display: block; margin-top: 2px; }
+.fleet-sub { display: block; font-size: 12px; color: t.$color-text-secondary; margin-top: 4px; }
+
+.fleet-volume {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-xs;
+  min-width: 140px;
+
+  span { font-size: 12px; color: t.$color-text-secondary; }
+}
+
+.pair-instructions {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-sm;
+  p { font-size: t.$fs-body-sm; }
+}
+
+.pair-code {
+  font-family: t.$font-mono;
+  font-size: t.$fs-headline-md;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.08em;
+  background: t.$color-surface-alt;
+  border-radius: t.$radius-md;
+  padding: t.$space-lg;
+  color: t.$color-primary;
+
+  &--loading {
+    font-size: t.$fs-body-md;
+    font-weight: 500;
+    color: t.$color-text-secondary;
+    letter-spacing: normal;
+  }
+}
+
+.auth-card__error {
+  background: t.$color-error-bg;
+  color: t.$color-error;
+  font-size: t.$fs-body-sm;
+  padding: t.$space-sm t.$space-md;
+  border-radius: t.$radius-md;
+}

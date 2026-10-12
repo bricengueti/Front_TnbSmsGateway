@@ -1,0 +1,30 @@
+@use 'tokens' as t;
+
+.ui-alert {
+  display: flex;
+  align-items: center;
+  gap: t.$space-md;
+  padding: t.$space-md t.$space-lg;
+  border-radius: t.$radius-lg;
+  border: 1px solid transparent;
+
+  &__icon { font-size: 24px; flex-shrink: 0; }
+  &__text { flex: 1; min-width: 0; }
+  &__title { font-weight: 700; font-size: t.$fs-body-md; }
+  &__desc { font-size: t.$fs-body-sm; margin-top: 2px; opacity: 0.85; }
+
+  &--error {
+    background: t.$color-error-bg; border-color: rgba(186,26,26,0.2); color: t.$color-error;
+    .ui-alert__title, .ui-alert__desc { color: #7A1414; }
+  }
+  &--warning {
+    background: t.$color-warning-bg; border-color: rgba(180,116,10,0.2);
+    .ui-alert__icon { color: t.$color-warning; }
+    .ui-alert__title, .ui-alert__desc { color: #7A4E07; }
+  }
+  &--info {
+    background: t.$color-info-bg; border-color: rgba(46,127,212,0.2);
+    .ui-alert__icon { color: t.$color-primary; }
+    .ui-alert__title, .ui-alert__desc { color: t.$color-primary-dark; }
+  }
+}

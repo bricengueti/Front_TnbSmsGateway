@@ -1,0 +1,79 @@
+<div class="page">
+  <div class="page__head">
+    <div>
+      <h1>Mes devices</h1>
+      <p>Gérez vos téléphones connectés et leurs statuts.</p>
+    </div>
+    <app-ui-button variant="primary" icon="add" iconPosition="left" (click)="openPairModal()">
+      Pairer un nouveau device
+    </app-ui-button>
+  </div>
+
+  <div class="page__metrics">
+    <app-ui-metric-card uiReveal label="Total devices" [value]="devices().length.toString()" icon="smartphone" tone="default" />
+    <app-ui-metric-card uiReveal [uiRevealDelay]="80" label="En ligne" [value]="onlineCount.toString()" icon="check_circle" tone="success" />
+    <app-ui-metric-card uiReveal [uiRevealDelay]="160" label="Hors ligne" [value]="offlineCount.toString()" icon="error" tone="error" />
+    <app-ui-metric-card uiReveal [uiRevealDelay]="240" label="Désactivés" [value]="disabledCount.toString()" icon="block" tone="warning" />
+  </div>
+
+  <div class="devices-grid">
+    @for (d of devices(); track d.id; let i = $index) {
+      <div class="device-card" uiReveal [uiRevealDelay]="i * 60">
+        <div class="device-card__head">
+          <div class="device-card__icon">
+            <span class="material-symbols-outlined">smartphone</span>
+          </div>
+          <div class="device-card__title">
+            <h3>{{ d.label }}</h3>
+            <span class="page__table-mono">{{ d.countryName }}</span>
+          </div>
+          <app-ui-badge [tone]="statusTone(d.status)">{{ statusLabel(d.status) }}</app-ui-badge>
+        </div>
+
+        @for (sim of d.sims; track sim.id) {
+          <div class="device-card__sim">
+            <span class="device-card__sim-op">{{ sim.operatorName }}</span>
+            <span class="device-card__sim-battery">{{ sim.dailySmsSent }} / {{ sim.dailySmsQuota === 'ILLIMITE' ? '∞' : sim.dailySmsQuota }} SMS aujourd'hui</span>
+          </div>
+        }
+        @if (!d.sims.length) {
+          <p class="page__field-hint">Aucune SIM détectée sur ce device.</p>
+        }
+
+        <div class="device-card__footer">
+          <span>{{ lastActivityLabel(d) }}</span>
+          <span class="material-symbols-outlined">chevron_right</span>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<app-ui-modal [(open)]="pairModalOpen" title="Pairer un nouveau device" width="sm">
+  <div class="pair-instructions">
+    <p>1. Ouvrez l'application TNB Gateway sur le téléphone à connecter.</p>
+    <p>2. Saisissez le code ci-dessous dans l'écran de connexion de l'app.</p>
+
+    @if (generatingCode()) {
+      <div class="pair-code pair-code--loading">Génération du code...</div>
+    } @else if (alreadyActive()) {
+      <div class="auth-card__error">
+        Une intégration PERSONAL est déjà active pour ce compte.
+      </div>
+      <app-ui-button variant="primary" icon="autorenew" iconPosition="left" [fullWidth]="true" (click)="regenerateCode()">
+        Régénérer le code existant
+      </app-ui-button>
+    } @else if (pairingError()) {
+      <p class="auth-card__error">{{ pairingError() }}</p>
+    } @else if (pairingCode()) {
+      <div class="pair-code">{{ pairingCode() }}</div>
+      <p class="page__field-hint">
+        Ce code n'est affiché qu'une seule fois par le serveur. Notez-le maintenant —
+        vous pourrez toujours en régénérer un nouveau si besoin.
+      </p>
+      <app-ui-button variant="secondary" icon="autorenew" iconPosition="left" [fullWidth]="true" (click)="regenerateCode()">
+        Régénérer un nouveau code
+      </app-ui-button>
+    }
+  </div>
+</app-ui-modal>

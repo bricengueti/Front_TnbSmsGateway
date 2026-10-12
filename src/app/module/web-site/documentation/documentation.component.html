@@ -1,0 +1,142 @@
+<section class="docs section section--tight">
+  <div class="container docs__layout">
+
+    <!-- Sidebar gauche : navigation -->
+    <aside class="docs__nav">
+      <div class="docs__search">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" placeholder="Rechercher un endpoint..." [(ngModel)]="search" />
+      </div>
+
+      <nav class="docs__nav-list">
+        @for (section of filteredNavSections(); track section.heading) {
+          <div class="docs__nav-section">
+            <span class="docs__nav-heading">{{ section.heading }}</span>
+            @for (link of section.links; track link.id) {
+              <a
+                class="docs__nav-link"
+                [class.docs__nav-link--active]="activeId() === link.id"
+                (click)="selectSection(link.id)">
+                @if (link.method) {
+                  <app-ui-badge [tone]="link.method === 'GET' ? 'info' : link.method === 'DELETE' ? 'error' : 'accent'" class="docs__nav-method">
+                    {{ link.method }}
+                  </app-ui-badge>
+                }
+                {{ link.label }}
+              </a>
+            }
+          </div>
+        }
+      </nav>
+    </aside>
+
+    <!-- Contenu central -->
+    <section class="docs__content">
+      <div class="docs__intro">
+        @if (activeSection().method && activeSection().path) {
+          <div class="docs__endpoint-line">
+            <app-ui-badge [tone]="activeSection().method === 'GET' ? 'info' : activeSection().method === 'DELETE' ? 'error' : 'accent'">
+              {{ activeSection().method }}
+            </app-ui-badge>
+            <code>{{ activeSection().path }}</code>
+          </div>
+        }
+        <h1>{{ activeSection().title }}</h1>
+        <p>{{ activeSection().intro }}</p>
+        @if (activeSection().auth) {
+          <div class="docs__auth-line">
+            <span class="material-symbols-outlined">lock</span>
+            Authentification requise : {{ activeSection().auth }}
+          </div>
+        }
+      </div>
+
+      @if (activeSection().notes?.length) {
+        <div class="docs__card docs__card--notes">
+          @for (note of activeSection().notes; track note) {
+            <p>{{ note }}</p>
+          }
+        </div>
+      }
+
+      @if (activeSection().id === 'introduction') {
+        <div class="docs__card">
+          <h2>URL de base</h2>
+          <div class="docs__url-row">
+            <code>{{ baseUrl }}</code>
+            <button type="button" (click)="copyBaseUrl()" title="Copier l'URL">
+              <span class="material-symbols-outlined">{{ copiedUrl() ? 'check' : 'content_copy' }}</span>
+            </button>
+          </div>
+        </div>
+      }
+
+      @for (table of activeSection().paramTables; track table.heading) {
+        <div class="docs__params">
+          <h2>{{ table.heading }}</h2>
+          <div class="docs__table-wrap">
+            <table class="docs__table">
+              <thead>
+                <tr>
+                  <th>Paramètre</th>
+                  <th>Type</th>
+                  <th>Requis</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (p of table.rows; track p.name) {
+                  <tr>
+                    <td class="docs__table-code">{{ p.name }}</td>
+                    <td class="docs__table-type">{{ p.type }}</td>
+                    <td>
+                      <app-ui-badge [tone]="p.required ? 'error' : 'neutral'">
+                        {{ p.required ? 'Oui' : 'Non' }}
+                      </app-ui-badge>
+                    </td>
+                    <td>{{ p.description }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+
+      @if (activeSection().showErrorTable) {
+        <div class="docs__params">
+          <h2>Codes d'erreur</h2>
+          <div class="docs__table-wrap">
+            <table class="docs__table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>HTTP</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (e of errorCodes; track e.code) {
+                  <tr>
+                    <td class="docs__table-code">{{ e.code }}</td>
+                    <td class="docs__table-type">{{ e.status }}</td>
+                    <td>{{ e.description }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+    </section>
+
+    <!-- Sidebar droite : exemples de code -->
+    <aside class="docs__code-panel">
+      <app-ui-code-block
+        [variant]="activeSection().snippets.length > 1 ? 'tabs' : 'terminal'"
+        [title]="activeSection().path ? (activeSection().method + ' ' + activeSection().path) : activeSection().title"
+        [snippets]="activeSection().snippets" />
+    </aside>
+
+  </div>
+</section>

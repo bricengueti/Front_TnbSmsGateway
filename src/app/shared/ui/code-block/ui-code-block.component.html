@@ -1,0 +1,46 @@
+<div class="ui-code" [class.ui-code--tabs]="variant === 'tabs'">
+  @if (variant === 'terminal') {
+    <div class="ui-code__header">
+      <div class="ui-code__dots">
+        <span class="ui-code__dot ui-code__dot--red"></span>
+        <span class="ui-code__dot ui-code__dot--yellow"></span>
+        <span class="ui-code__dot ui-code__dot--green"></span>
+      </div>
+      <span class="ui-code__title">{{ title }}</span>
+      <button class="ui-code__copy" type="button" (click)="copy()" title="Copier le code">
+        <span class="material-symbols-outlined">{{ copied() ? 'check' : 'content_copy' }}</span>
+      </button>
+    </div>
+  } @else {
+    <div class="ui-code__tabbar">
+      @for (snippet of snippets; track snippet.label; let i = $index) {
+        <button
+          type="button"
+          class="ui-code__tab"
+          [class.ui-code__tab--active]="i === activeIndex()"
+          (click)="selectTab(i)">
+          {{ snippet.label }}
+        </button>
+      }
+    </div>
+  }
+
+  <div class="ui-code__body">
+    @if (variant === 'tabs') {
+      <button class="ui-code__copy ui-code__copy--floating" type="button" (click)="copy()" title="Copier le code">
+        <span class="material-symbols-outlined">{{ copied() ? 'check' : 'content_copy' }}</span>
+      </button>
+    }
+    <pre class="ui-code__pre"><code [innerHTML]="highlightedCode()"></code></pre>
+  </div>
+
+  @if (variant === 'terminal' && responseStatus) {
+    <div class="ui-code__footer">
+      <span class="ui-code__status">
+        <span class="material-symbols-outlined">check_circle</span>
+        {{ responseStatus }}
+      </span>
+      @if (responseTime) { <span class="ui-code__time">{{ responseTime }}</span> }
+    </div>
+  }
+</div>

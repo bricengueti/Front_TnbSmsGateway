@@ -1,0 +1,100 @@
+@use 'tokens' as t;
+
+.devices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: t.$space-lg;
+}
+
+.device-card {
+  background: t.$color-surface;
+  border-radius: t.$radius-xl;
+  box-shadow: t.$shadow-sm;
+  padding: t.$space-lg;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-md;
+  transition: box-shadow 200ms ease;
+
+  &:hover { box-shadow: t.$shadow-md; }
+
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    gap: t.$space-md;
+  }
+
+  &__icon {
+    width: 44px; height: 44px;
+    border-radius: t.$radius-md;
+    background: t.$color-surface-alt;
+    display: flex; align-items: center; justify-content: center;
+    color: t.$color-text-secondary;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    flex: 1;
+    min-width: 0;
+    h3 { font-size: t.$fs-body-md; font-weight: 700; }
+  }
+
+  &__sim {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: t.$color-surface-alt;
+    border-radius: t.$radius-md;
+    padding: t.$space-sm t.$space-md;
+    font-size: t.$fs-body-sm;
+    font-weight: 600;
+  }
+
+  &__sim-battery { color: t.$color-text-secondary; font-weight: 400; }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: t.$space-sm;
+    border-top: 1px solid t.$color-border;
+    font-size: t.$fs-body-sm;
+    color: t.$color-text-secondary;
+
+    .material-symbols-outlined { font-size: 18px; }
+  }
+}
+
+.pair-instructions {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-sm;
+  p { font-size: t.$fs-body-sm; }
+}
+
+.pair-code {
+  font-family: t.$font-mono;
+  font-size: t.$fs-headline-md;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.08em;
+  background: t.$color-surface-alt;
+  border-radius: t.$radius-md;
+  padding: t.$space-lg;
+  color: t.$color-primary;
+
+  &--loading {
+    font-size: t.$fs-body-md;
+    font-weight: 500;
+    color: t.$color-text-secondary;
+    letter-spacing: normal;
+  }
+}
+
+.auth-card__error {
+  background: t.$color-error-bg;
+  color: t.$color-error;
+  font-size: t.$fs-body-sm;
+  padding: t.$space-sm t.$space-md;
+  border-radius: t.$radius-md;
+}

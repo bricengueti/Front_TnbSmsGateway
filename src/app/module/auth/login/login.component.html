@@ -1,0 +1,67 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <a routerLink="/product" class="auth-card__brand">
+      <img src="assets/logo.png" alt="TNB SmsGateway" />
+    </a>
+
+    @if (step() === 'email') {
+      <h1>Connexion à votre compte</h1>
+      <p>Recevez un code de connexion par email — aucun mot de passe à retenir.</p>
+
+      <div class="auth-card__form">
+        <div class="page__field">
+          <label for="login-email">Email professionnel</label>
+          <input
+            id="login-email"
+            type="email"
+            placeholder="vous@entreprise.com"
+            [(ngModel)]="email"
+            (keyup.enter)="requestCode()" />
+        </div>
+
+        @if (errorMessage()) {
+          <p class="auth-card__error">{{ errorMessage() }}</p>
+        }
+
+        <app-ui-button variant="primary" [fullWidth]="true" [disabled]="loading() || !email.trim()" (click)="requestCode()">
+          {{ loading() ? 'Envoi en cours...' : 'Recevoir le code' }}
+        </app-ui-button>
+      </div>
+    }
+
+    @if (step() === 'code') {
+      <h1>Vérifiez votre email</h1>
+      <p>
+        Code à 6 chiffres envoyé à <strong>{{ email }}</strong>
+        @if (expiresInMinutes()) { — valide {{ expiresInMinutes() }} minutes }
+      </p>
+
+      <div class="auth-card__form">
+        <div class="page__field">
+          <label for="login-code">Code de connexion</label>
+          <input
+            id="login-code"
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            placeholder="123456"
+            class="auth-card__code-input"
+            [(ngModel)]="code"
+            (keyup.enter)="verifyCode()" />
+        </div>
+
+        @if (errorMessage()) {
+          <p class="auth-card__error">{{ errorMessage() }}</p>
+        }
+
+        <app-ui-button variant="primary" [fullWidth]="true" [disabled]="loading() || code.length !== 6" (click)="verifyCode()">
+          {{ loading() ? 'Vérification...' : 'Vérifier et me connecter' }}
+        </app-ui-button>
+
+        <button type="button" class="auth-card__back" (click)="backToEmail()">
+          ← Utiliser une autre adresse email
+        </button>
+      </div>
+    }
+  </div>
+</div>

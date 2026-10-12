@@ -1,0 +1,77 @@
+@use 'tokens' as t;
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: t.$color-bg;
+  padding: t.$space-lg;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: t.$color-surface;
+  border-radius: t.$radius-2xl;
+  box-shadow: t.$shadow-xl;
+  padding: t.$space-2xl;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-md;
+
+  &__brand {
+    display: flex;
+    justify-content: center;
+    margin-bottom: t.$space-md;
+
+    img { height: 40px; width: auto; }
+  }
+
+  h1 {
+    font-family: t.$font-heading;
+    font-size: t.$fs-headline-md;
+    text-align: center;
+  }
+
+  p {
+    font-size: t.$fs-body-sm;
+    color: t.$color-text-secondary;
+    text-align: center;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: t.$space-md;
+    margin-top: t.$space-md;
+  }
+
+  &__code-input {
+    text-align: center;
+    font-family: t.$font-mono;
+    font-size: t.$fs-headline-sm;
+    letter-spacing: 0.3em;
+  }
+
+  &__error {
+    background: t.$color-error-bg;
+    color: t.$color-error;
+    font-size: t.$fs-body-sm;
+    padding: t.$space-sm t.$space-md;
+    border-radius: t.$radius-md;
+    text-align: left;
+  }
+
+  &__back {
+    background: transparent;
+    border: none;
+    color: t.$color-text-secondary;
+    font-size: t.$fs-body-sm;
+    font-weight: 600;
+    text-align: center;
+    padding: t.$space-xs;
+
+    &:hover { color: t.$color-primary; }
+  }
+}

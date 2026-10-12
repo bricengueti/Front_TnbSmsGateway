@@ -1,0 +1,105 @@
+// =========================================================================
+// TNB SmsGateway — Design tokens
+// Source de vérité unique pour couleurs, typo, espacements, rayons, ombres.
+// Extrait du logo de marque + du design system généré (Google Stitch).
+// Toute évolution de la charte graphique se fait UNIQUEMENT ici.
+// =========================================================================
+
+// --- Couleurs de marque ---------------------------------------------------
+$color-primary:        #2E7FD4; // Bleu — CTA primaires, liens, éléments actifs
+$color-primary-dark:   #1F63AC; // Hover / pressed
+$color-primary-light:  #EAF2FC; // Fond teinté (badges, hover léger)
+
+$color-accent:         #F5A623; // Orange — accents secondaires, "populaire", succès visuel
+$color-accent-dark:    #C9860F;
+$color-accent-light:   #FFF4E0;
+
+$color-teal:           #1B5E5A; // Bleu-vert foncé — sidebar, nav, footer
+$color-teal-light:     #23736D;
+
+$color-silver:         #9BA3AA; // Gris argenté — bordures, texte tertiaire, désactivé
+
+// --- Neutres & surfaces -----------------------------------------------
+$color-bg:              #FAFAFA;
+$color-surface:         #FFFFFF;
+$color-surface-alt:     #F1F5F9;
+$color-surface-sunken:  #EEF2F6;
+$color-border:          #E2E8F0;
+
+$color-text:            #1F2328;
+$color-text-secondary:  #55606B;
+$color-text-tertiary:   $color-silver;
+$color-text-on-primary: #FFFFFF;
+$color-text-on-teal:    #FFFFFF;
+
+// --- Statuts ---------------------------------------------------------------
+$color-success:         #1E9E75;
+$color-success-bg:      #E1F5EE;
+$color-warning:         #B4740A;
+$color-warning-bg:      #FFF4E0;
+$color-error:           #BA1A1A;
+$color-error-bg:        #FDE8E8;
+$color-info:            $color-primary;
+$color-info-bg:         $color-primary-light;
+
+// --- Surfaces code / zones techniques ---------------------------------
+$color-code-bg:         #0F172A;
+$color-code-bg-alt:     #1E293B;
+$color-code-border:     #334155;
+$color-code-text:       #E2E8F0;
+
+// --- Typographie -------------------------------------------------------
+$font-heading: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-mono:    'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+
+// Échelle typographique (taille / line-height)
+$fs-display-lg: 48px;
+$lh-display-lg: 56px;
+$fs-headline-lg: 32px;
+$lh-headline-lg: 40px;
+$fs-headline-md: 24px;
+$lh-headline-md: 32px;
+$fs-headline-sm: 20px;
+$lh-headline-sm: 28px;
+$fs-body-lg: 18px;
+$lh-body-lg: 28px;
+$fs-body-md: 16px;
+$lh-body-md: 24px;
+$fs-body-sm: 14px;
+$lh-body-sm: 20px;
+$fs-label-md: 14px;
+$lh-label-md: 16px;
+$fs-code-md: 14px;
+$lh-code-md: 22px;
+
+// --- Rayons --------------------------------------------------------------
+$radius-sm:   0.25rem;
+$radius-md:   0.5rem;
+$radius-lg:   0.75rem;
+$radius-xl:   1rem;
+$radius-2xl:  1.5rem;
+$radius-full: 9999px;
+
+// --- Espacements -----------------------------------------------------------
+$space-xs:  4px;
+$space-sm:  8px;
+$space-md:  16px;
+$space-lg:  24px;
+$space-xl:  32px;
+$space-2xl: 48px;
+$space-3xl: 64px;
+
+$container-max:  1280px;
+$sidebar-width:  260px;
+$doc-code-width: 400px;
+
+// --- Ombres ------------------------------------------------------------
+$shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+$shadow-md: 0 8px 20px rgba(15, 23, 42, 0.08);
+$shadow-lg: 0 10px 25px rgba(15, 23, 42, 0.12);
+$shadow-xl: 0 20px 40px rgba(15, 23, 42, 0.16);
+
+// --- Transitions ------------------------------------------------------
+$transition-fast: 150ms ease;
+$transition-base: 220ms ease;

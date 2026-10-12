@@ -1,0 +1,9 @@
+@if (imageUrl) {
+  <img class="ui-avatar" [ngClass]="'ui-avatar--' + size" [src]="imageUrl" [alt]="name" />
+} @else {
+  <span class="ui-avatar ui-avatar--initials" [ngClass]="'ui-avatar--' + size"
+        [style.background]="'hsl(' + bgHue + ', 55%, 92%)'"
+        [style.color]="'hsl(' + bgHue + ', 45%, 32%)'">
+    {{ initials }}
+  </span>
+}

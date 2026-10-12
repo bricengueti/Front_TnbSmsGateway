@@ -1,0 +1,24 @@
+<div class="ui-metric" [ngClass]="['ui-metric--' + tone, emphasis ? 'ui-metric--emphasis' : '']">
+  <div class="ui-metric__top">
+    @if (icon) {
+      <span class="material-symbols-outlined ui-metric__icon">{{ icon }}</span>
+    }
+    @if (trend !== undefined) {
+      <span class="ui-metric__trend" [class.ui-metric__trend--down]="trend < 0">
+        <span class="material-symbols-outlined">{{ trend < 0 ? 'trending_down' : 'trending_up' }}</span>
+        {{ trend > 0 ? '+' : '' }}{{ trend }}%
+      </span>
+    } @else if (trendLabel) {
+      <span class="ui-metric__trend ui-metric__trend--flat">
+        <span class="material-symbols-outlined">check_circle</span>
+        {{ trendLabel }}
+      </span>
+    }
+  </div>
+  <span class="ui-metric__label">{{ label }}</span>
+  <div class="ui-metric__value-row">
+    <span class="ui-metric__value">{{ value }}</span>
+    @if (unit) { <span class="ui-metric__unit">{{ unit }}</span> }
+  </div>
+  <ng-content />
+</div>

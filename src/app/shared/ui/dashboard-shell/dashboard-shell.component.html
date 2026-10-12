@@ -1,0 +1,59 @@
+<div class="shell">
+  <aside class="shell__sidebar">
+    <a routerLink="/product" class="shell__brand">
+      <img src="assets/logo.png" alt="TNB SmsGateway" class="shell__logo" />
+      <span class="shell__brand-name">TNB Gateway</span>
+    </a>
+
+    <nav class="shell__nav">
+      @for (item of navItems; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="is-active" class="shell__nav-item">
+          <span class="material-symbols-outlined">{{ item.icon }}</span>
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <!-- Bouton de bascule d'espace : réservé aux comptes admin (authService.isAdmin()). -->
+    @if (canSwitchToAdmin) {
+      <a [routerLink]="switchTarget" class="shell__switch">
+        <span class="material-symbols-outlined">swap_horiz</span>
+        {{ switchLabel }}
+      </a>
+    }
+
+    <button type="button" class="shell__logout" (click)="logout()">
+      <span class="material-symbols-outlined">logout</span>
+      Déconnexion
+    </button>
+
+    <a routerLink="/product" class="shell__view-site">
+      <span class="material-symbols-outlined">open_in_new</span>
+      Voir le site
+    </a>
+  </aside>
+
+  <div class="shell__main">
+    <header class="shell__topbar">
+      <div class="shell__search">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" placeholder="Rechercher..." />
+      </div>
+
+      <div class="shell__topbar-actions">
+        @if (role === 'admin') {
+          <span class="shell__admin-badge">ADMIN</span>
+        }
+        <button type="button" class="shell__icon-btn" aria-label="Notifications">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="shell__notif-dot"></span>
+        </button>
+        <app-ui-avatar [name]="userName" size="md" />
+      </div>
+    </header>
+
+    <main class="shell__content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

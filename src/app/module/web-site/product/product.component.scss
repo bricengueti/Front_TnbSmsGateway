@@ -1,0 +1,253 @@
+@use 'tokens' as t;
+
+// --- Hero ---
+.hero {
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: t.$space-2xl;
+    align-items: center;
+
+    @media (min-width: 992px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__copy { display: flex; flex-direction: column; align-items: flex-start; gap: t.$space-xl; }
+
+  &__pill {
+    display: flex;
+    align-items: center;
+    gap: t.$space-sm;
+    background: t.$color-surface-alt;
+    padding: 6px t.$space-md;
+    border-radius: t.$radius-full;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  &__pill-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: t.$color-primary;
+  }
+
+  &__title {
+    font-family: t.$font-heading;
+    font-size: t.$fs-headline-lg;
+    line-height: t.$lh-headline-lg;
+
+    @media (min-width: 768px) {
+      font-size: t.$fs-display-lg;
+      line-height: t.$lh-display-lg;
+    }
+  }
+
+  &__subtitle {
+    font-size: t.$fs-body-lg;
+    line-height: t.$lh-body-lg;
+    color: t.$color-text-secondary;
+    max-width: 500px;
+  }
+
+  &__actions { display: flex; flex-wrap: wrap; gap: t.$space-md; }
+
+  &__trust {
+    display: flex;
+    align-items: center;
+    gap: t.$space-xs;
+    font-size: t.$fs-body-sm;
+    color: t.$color-text-secondary;
+    padding-top: t.$space-lg;
+    border-top: 1px solid t.$color-border;
+    width: 100%;
+    max-width: 320px;
+
+    .material-symbols-outlined { font-size: 16px; color: t.$color-success; }
+  }
+
+  &__sep { margin: 0 t.$space-xs; }
+
+  &__code {
+    position: relative;
+
+    // Le terminal réagit légèrement au survol (rotation + zoom très subtils),
+    // fidèle à l'effet "hover:rotate-1 hover:scale-[1.02]" du prototype Stitch.
+    ::ng-deep .ui-code {
+      transition: transform 500ms ease;
+    }
+    &:hover ::ng-deep .ui-code {
+      transform: rotate(1deg) scale(1.02);
+    }
+  }
+
+  &__code-glow {
+    position: absolute;
+    inset: -16px;
+    background: radial-gradient(circle, rgba(46, 127, 212, 0.25), transparent 70%);
+    filter: blur(32px);
+    border-radius: t.$radius-2xl;
+    opacity: 0;
+    transition: opacity 700ms ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  &__code:hover &__code-glow { opacity: 1; }
+
+  &__float-card {
+    position: absolute;
+    bottom: -24px; left: -12px;
+    background: t.$color-surface;
+    border-radius: t.$radius-lg;
+    box-shadow: t.$shadow-lg;
+    padding: t.$space-md;
+    display: flex;
+    align-items: center;
+    gap: t.$space-md;
+    z-index: 2;
+  }
+
+  &__float-icon {
+    width: 40px; height: 40px;
+    border-radius: t.$radius-full;
+    background: rgba(27, 94, 90, 0.12);
+    color: t.$color-teal;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  &__float-title { font-size: t.$fs-label-md; font-weight: 700; }
+  &__float-sub { font-size: t.$fs-body-sm; color: t.$color-text-secondary; }
+}
+
+// --- Comment ça marche ---
+.how {
+  &__inner { display: flex; flex-direction: column; gap: t.$space-2xl; }
+
+  &__head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: t.$space-sm;
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  &__title { font-size: t.$fs-headline-lg; }
+  &__subtitle { color: t.$color-text-secondary; }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: t.$space-xl;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+// --- Fonctionnalités ---
+.features {
+  &__title { font-size: t.$fs-headline-md; margin-bottom: t.$space-2xl; }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: t.$space-lg;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__large {
+    @media (min-width: 768px) { grid-column: span 2; }
+  }
+}
+
+// --- Aperçu tarifs ---
+.pricing-preview {
+  &__inner { display: flex; flex-direction: column; align-items: center; gap: t.$space-2xl; }
+
+  &__head { text-align: center; }
+  &__head h2 { font-size: t.$fs-headline-lg; }
+  &__head p { color: t.$color-text-secondary; margin-top: t.$space-sm; }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: t.$space-lg;
+    width: 100%;
+    max-width: 900px;
+
+    @media (min-width: 768px) { grid-template-columns: 1fr 1fr; }
+  }
+
+  &__card {
+    background: t.$color-surface-sunken;
+    border-radius: t.$radius-xl;
+    padding: t.$space-xl;
+    box-shadow: t.$shadow-sm;
+    display: flex;
+    flex-direction: column;
+    gap: t.$space-md;
+
+    p { color: t.$color-text-secondary; font-size: t.$fs-body-sm; }
+
+    ul {
+      list-style: none;
+      margin: 0; padding: 0;
+      display: flex; flex-direction: column; gap: t.$space-sm;
+
+      li {
+        display: flex; align-items: center; gap: t.$space-sm;
+        font-size: t.$fs-body-sm;
+        .material-symbols-outlined { font-size: 16px; }
+      }
+    }
+
+    &--primary {
+      background: t.$color-primary;
+      color: #fff;
+      box-shadow: t.$shadow-xl;
+      p { color: rgba(255,255,255,0.85); }
+      li { color: rgba(255,255,255,0.92); }
+    }
+  }
+
+  &__amount {
+    font-family: t.$font-heading;
+    font-size: t.$fs-display-lg;
+    font-weight: 700;
+
+    span { font-size: t.$fs-body-md; font-weight: 400; opacity: 0.8; }
+  }
+}
+
+// --- CTA final ---
+.cta {
+  &__box {
+    background: t.$color-teal;
+    border-radius: t.$radius-2xl;
+    padding: t.$space-2xl;
+    box-shadow: t.$shadow-xl;
+    display: flex;
+    flex-direction: column;
+    gap: t.$space-xl;
+    align-items: center;
+    text-align: center;
+
+    h2 { color: #fff; font-size: t.$fs-headline-lg; }
+    p { color: rgba(255,255,255,0.85); font-size: t.$fs-body-lg; margin-top: t.$space-sm; max-width: 480px; }
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+      padding: t.$space-2xl t.$space-3xl;
+    }
+  }
+}

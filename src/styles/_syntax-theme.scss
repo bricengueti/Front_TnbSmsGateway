@@ -1,0 +1,73 @@
+// =========================================================================
+// Thème de coloration syntaxique — fidèle au thème "Dark+" de Visual Studio
+// Code, le standard que connaissent tous les développeurs. Généré par
+// Prism.js (voir ui-code-block component) et appliqué ici globalement,
+// car c'est un thème transverse à tout le site, pas un style de page.
+// =========================================================================
+@use 'tokens' as t;
+
+.ui-code__pre {
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: #6A9955;
+    font-style: italic;
+  }
+
+  .token.keyword,
+  .token.selector,
+  .token.builtin,
+  .token.boolean,
+  .token.constant {
+    color: #569CD6;
+  }
+
+  .token.string,
+  .token.char,
+  .token.attr-value {
+    color: #CE9178;
+  }
+
+  .token.function,
+  .token.method {
+    color: #DCDCAA;
+  }
+
+  .token.number {
+    color: #B5CEA8;
+  }
+
+  .token.property,
+  .token.parameter,
+  .token.variable {
+    color: #9CDCFE;
+  }
+
+  .token.class-name,
+  .token.maybe-class-name {
+    color: #4EC9B0; // teinte proche du teal de marque — heureuse coïncidence avec Dark+
+  }
+
+  .token.operator,
+  .token.punctuation {
+    color: #D4D4D4;
+  }
+
+  .token.tag,
+  .token.selector .token.class {
+    color: #569CD6;
+  }
+
+  .token.url,
+  .token.important,
+  .token.regex {
+    color: #D16969;
+  }
+
+  // cURL / bash : mise en avant du nom de commande
+  .language-bash {
+    .token.function { color: #DCDCAA; }
+    .token.parameter { color: #9CDCFE; }
+  }
+}

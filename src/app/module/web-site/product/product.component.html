@@ -1,0 +1,129 @@
+<!-- Hero -->
+<section class="hero section">
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <div class="hero__pill">
+        <span class="hero__pill-dot ui-animate-pulse"></span>
+        Infrastructure Telecom CEMAC
+      </div>
+      <h1 class="hero__title">Passerelle SMS API pour la CEMAC</h1>
+      <p class="hero__subtitle">
+        Connect. Send. Transact. L'API la plus robuste pour intégrer la messagerie texte et les
+        alertes transactionnelles dans vos applications au Cameroun, Gabon, Tchad, et au-delà.
+      </p>
+      <div class="hero__actions">
+        <app-ui-button variant="primary" size="lg" routerLink="/register">Commencer gratuitement</app-ui-button>
+        <app-ui-button variant="secondary" size="lg" icon="terminal" iconPosition="left" routerLink="/documentation">
+          Explorer la doc
+        </app-ui-button>
+      </div>
+      <div class="hero__trust">
+        <span class="material-symbols-outlined">check_circle</span> 99.99% Uptime
+        <span class="hero__sep">•</span>
+        <span class="material-symbols-outlined">check_circle</span> Support 24/7
+      </div>
+    </div>
+
+    <div class="hero__code">
+      <div class="hero__code-glow"></div>
+      <app-ui-code-block
+        variant="terminal"
+        title="POST /v1/messages/send"
+        [snippets]="heroSnippet"
+        responseStatus="200 OK"
+        responseTime="142ms" />
+      <div class="hero__float-card ui-animate-bounce">
+        <div class="hero__float-icon">
+          <span class="material-symbols-outlined">mark_email_read</span>
+        </div>
+        <div>
+          <p class="hero__float-title">Delivered</p>
+          <p class="hero__float-sub">+237 6XX XXX XXX</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Comment ça marche -->
+<section class="how section" style="background:#fff;">
+  <div class="container how__inner">
+    <div class="how__head">
+      <span class="eyebrow">Intégration Express</span>
+      <h2 class="how__title">Comment ça marche</h2>
+      <p class="how__subtitle">
+        De la création de compte à l'envoi de votre premier message de test en moins de 5 minutes.
+        Conçu pour les développeurs.
+      </p>
+    </div>
+    <div class="how__grid">
+      @for (s of steps; track s.step) {
+        <app-ui-step-card uiReveal [uiRevealDelay]="$index * 100" [step]="s.step" [icon]="s.icon" [tone]="s.tone" [title]="s.title" [description]="s.description" />
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Fonctionnalités -->
+<section class="features section" uiReveal>
+  <div class="container">
+    <h2 class="features__title">Fonctionnalités clés</h2>
+    <div class="features__grid">
+      <app-ui-feature-card
+        class="features__large"
+        size="large"
+        tone="primary"
+        icon="hub"
+        title="Routage Intelligent"
+        description="Notre algorithme sélectionne automatiquement la meilleure route télécom pour garantir le taux de délivrabilité le plus élevé possible vers la CEMAC." />
+      @for (f of smallFeatures; track f.title) {
+        <app-ui-feature-card size="small" [tone]="f.tone" [icon]="f.icon" [title]="f.title" [description]="f.description" />
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Aperçu tarifs -->
+<section class="pricing-preview section" style="background:#fff;" uiReveal>
+  <div class="container pricing-preview__inner">
+    <div class="pricing-preview__head">
+      <h2>Tarification transparente</h2>
+      <p>Payez uniquement ce que vous consommez ou utilisez vos propres appareils.</p>
+    </div>
+
+    <div class="pricing-preview__grid">
+      <div class="pricing-preview__card">
+        <span class="eyebrow">Bring Your Own Device</span>
+        <div class="pricing-preview__amount">0 XAF <span>/ SMS</span></div>
+        <p>Connectez l'application Android TNB à vos téléphones existants. Vous payez le forfait SMS de votre opérateur local.</p>
+        <app-ui-button variant="secondary" [fullWidth]="true" routerLink="/rate">Voir l'application</app-ui-button>
+      </div>
+
+      <div class="pricing-preview__card pricing-preview__card--primary">
+        <span class="eyebrow" style="color:#fff;">Volume Pro</span>
+        <div class="pricing-preview__amount">Sur Devis</div>
+        <p>Routes premium directes. Achetez des packs de crédits avec paiement Mobile Money instantané pour des envois massifs.</p>
+        <ul>
+          <li><span class="material-symbols-outlined">check</span> Taux de livraison prioritaire</li>
+          <li><span class="material-symbols-outlined">check</span> Sender ID personnalisé (selon pays)</li>
+        </ul>
+        <app-ui-button variant="inverse" [fullWidth]="true" routerLink="/rate">Contacter les ventes</app-ui-button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA final -->
+<section class="cta section" uiReveal>
+  <div class="container">
+    <div class="cta__box">
+      <div class="cta__copy">
+        <h2>Prêt à intégrer TNB SmsGateway ?</h2>
+        <p>Créez votre compte aujourd'hui. Profitez de crédits de test offerts pour valider votre intégration.</p>
+      </div>
+      <app-ui-button variant="inverse" size="lg" icon="arrow_forward" routerLink="/register">
+        Créer un compte
+      </app-ui-button>
+    </div>
+  </div>
+</section>

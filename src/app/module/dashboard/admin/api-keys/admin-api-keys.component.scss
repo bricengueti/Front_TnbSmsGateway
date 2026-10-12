@@ -1,0 +1,33 @@
+@use 'tokens' as t;
+
+.page__card-head { align-items: center; }
+
+.admin-keys-search { max-width: 320px; margin: 0; }
+.admin-keys-search input { width: 100%; }
+
+.admin-keys-owner {
+  display: flex;
+  align-items: center;
+  gap: t.$space-sm;
+  span { font-size: t.$fs-body-sm; }
+}
+
+.plan-filters {
+  display: flex;
+  background: t.$color-surface-alt;
+  border-radius: t.$radius-md;
+  padding: 3px;
+}
+
+.plan-filters__btn {
+  background: transparent;
+  border: none;
+  padding: 6px t.$space-md;
+  border-radius: t.$radius-sm;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: t.$color-text-secondary;
+  transition: background 150ms ease, color 150ms ease;
+
+  &--active { background: t.$color-surface; color: t.$color-primary; box-shadow: t.$shadow-sm; }
+}

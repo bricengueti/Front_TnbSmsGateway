@@ -1,0 +1,251 @@
+// =========================================================================
+// Patterns partagés par toutes les pages dashboard (client + admin) :
+// grille de métriques, carte de contenu, tableau de données. Centralisés
+// ici pour que les 11 écrans du dashboard restent visuellement cohérents
+// et pour qu'une évolution de style (ex: densité de tableau) se fasse en
+// un seul endroit plutôt que dans chaque composant de page.
+// =========================================================================
+@use 'tokens' as t;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-xl;
+  padding-bottom: t.$space-3xl;
+}
+
+.page__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: t.$space-lg;
+  flex-wrap: wrap;
+
+  h1 {
+    font-family: t.$font-heading;
+    font-size: t.$fs-headline-lg;
+    display: flex;
+    align-items: center;
+    gap: t.$space-md;
+  }
+
+  p { color: t.$color-text-secondary; margin-top: t.$space-xs; max-width: 560px; }
+}
+
+.page__admin-tag {
+  display: inline-flex;
+  align-items: center;
+  background: t.$color-error-bg;
+  color: t.$color-error;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 3px t.$space-sm;
+  border-radius: t.$radius-sm;
+}
+
+.page__metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: t.$space-lg;
+}
+
+.page__card {
+  background: t.$color-surface;
+  border-radius: t.$radius-xl;
+  box-shadow: t.$shadow-sm;
+  padding: t.$space-xl;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-lg;
+}
+
+.page__card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: t.$space-md;
+  flex-wrap: wrap;
+
+  h2 { font-size: t.$fs-headline-sm; }
+  p { color: t.$color-text-secondary; font-size: t.$fs-body-sm; margin-top: 2px; }
+}
+
+.page__link {
+  display: inline-flex;
+  align-items: center;
+  gap: t.$space-xs;
+  font-size: t.$fs-body-sm;
+  font-weight: 700;
+  color: t.$color-primary;
+  white-space: nowrap;
+
+  .material-symbols-outlined { font-size: 16px; }
+  &:hover { color: t.$color-primary-dark; }
+}
+
+.page__chart-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: t.$space-sm;
+  min-height: 220px;
+  background: t.$color-surface-alt;
+  border-radius: t.$radius-lg;
+  color: t.$color-text-tertiary;
+  text-align: center;
+  padding: t.$space-lg;
+
+  .material-symbols-outlined { font-size: 40px; }
+  p { font-size: t.$fs-body-sm; max-width: 380px; }
+}
+
+// --- Tableau de données générique ---
+.page__table-wrap { overflow-x: auto; }
+
+.page__table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: t.$color-text-secondary;
+    padding: t.$space-sm t.$space-md;
+    border-bottom: 1px solid t.$color-border;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: t.$space-md;
+    font-size: t.$fs-body-sm;
+    border-bottom: 1px solid t.$color-border;
+    vertical-align: middle;
+  }
+
+  tbody tr {
+    transition: background 150ms ease;
+    &:hover td { background: t.$color-surface-alt; }
+    &:last-child td { border-bottom: none; }
+  }
+}
+
+.page__table-mono { font-family: t.$font-mono; font-size: 12.5px; color: t.$color-text-secondary; }
+
+.page__table-truncate {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.page__table-actions {
+  display: flex;
+  align-items: center;
+  gap: t.$space-xs;
+  justify-content: flex-end;
+}
+
+.page__icon-btn {
+  background: transparent;
+  border: none;
+  color: t.$color-text-secondary;
+  display: flex;
+  padding: t.$space-xs;
+  border-radius: t.$radius-md;
+  transition: background 150ms ease, color 150ms ease;
+
+  .material-symbols-outlined { font-size: 18px; }
+
+  &:hover { background: t.$color-surface-alt; color: t.$color-text; }
+  &--danger:hover { color: t.$color-error; background: t.$color-error-bg; }
+}
+
+.page__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: t.$space-md;
+  font-size: t.$fs-body-sm;
+  color: t.$color-text-secondary;
+}
+
+.page__pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: t.$space-xs;
+}
+
+.page__page-btn {
+  min-width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: t.$radius-md;
+  border: 1px solid t.$color-border;
+  background: t.$color-surface;
+  font-size: t.$fs-body-sm;
+  font-weight: 600;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+
+  &:hover { border-color: t.$color-primary; color: t.$color-primary; }
+  &--active { background: t.$color-primary; border-color: t.$color-primary; color: #fff; }
+}
+
+.page__form-grid {
+  display: grid;
+  gap: t.$space-md;
+}
+
+// --- Skeleton loading (chargement asynchrone des données mock/API) ---
+@keyframes skeleton-shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}
+
+.skeleton {
+  display: inline-block;
+  height: 12px;
+  border-radius: t.$radius-sm;
+  background: linear-gradient(90deg, t.$color-surface-alt 0%, t.$color-border 50%, t.$color-surface-alt 100%);
+  background-size: 400px 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+
+  &--sm { width: 60px; }
+  &--md { width: 110px; }
+  &--lg { width: 180px; }
+}
+
+.skeleton-row td { padding: t.$space-md; }
+
+.page__field {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-xs;
+
+  label { font-size: t.$fs-label-md; font-weight: 600; color: t.$color-text; }
+
+  input, select, textarea {
+    border: 1px solid t.$color-border;
+    border-radius: t.$radius-md;
+    padding: t.$space-sm t.$space-md;
+    font-size: t.$fs-body-sm;
+    font-family: t.$font-body;
+    background: t.$color-surface;
+    color: t.$color-text;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+
+    &:focus {
+      outline: none;
+      border-color: t.$color-primary;
+      box-shadow: 0 0 0 3px t.$color-primary-light;
+    }
+
+    &::placeholder { color: t.$color-text-tertiary; }
+  }
+
+  textarea { resize: vertical; min-height: 90px; }
+  .page__field-hint { font-size: 12px; color: t.$color-text-secondary; }
+}

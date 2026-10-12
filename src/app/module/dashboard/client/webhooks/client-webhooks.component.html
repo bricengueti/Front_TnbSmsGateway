@@ -1,0 +1,75 @@
+<div class="page">
+  <div class="page__head">
+    <div>
+      <h1>Webhook</h1>
+      <p>Configurez l'URL qui recevra vos SMS entrants en temps réel.</p>
+    </div>
+  </div>
+
+  <div class="webhooks-layout">
+    <div class="page__card" uiReveal>
+      <h2>
+        <span class="material-symbols-outlined">link</span>
+        Point de terminaison
+      </h2>
+
+      <div class="page__form-grid">
+        <div class="page__field">
+          <label for="wh-url">URL du webhook</label>
+          <input id="wh-url" type="text" placeholder="https://api.monentreprise.com/webhooks/tnb" [(ngModel)]="webhookUrl" />
+          <span class="page__field-hint">Doit commencer par http:// ou https://.</span>
+        </div>
+
+        <app-ui-button variant="primary" icon="save" iconPosition="left" [disabled]="saving()" (click)="save()">
+          {{ saving() ? 'Enregistrement...' : (saved() ? 'Enregistré !' : 'Enregistrer') }}
+        </app-ui-button>
+
+        <div class="page__field">
+          <label>Secret de signature</label>
+          <div class="secret-row">
+            <code>{{ revealedSecret() ?? config()?.webhookSecret ?? 'Aucun secret généré' }}</code>
+            <button type="button" (click)="rotateSecret()" title="Régénérer" [disabled]="rotating()">
+              <span class="material-symbols-outlined">autorenew</span>
+            </button>
+          </div>
+          @if (revealedSecret()) {
+            <div class="reveal-warning">
+              <span class="material-symbols-outlined">warning</span>
+              Copiez ce secret maintenant — il ne sera plus jamais affiché en clair.
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="page__card" uiReveal [uiRevealDelay]="100">
+      <h2>
+        <span class="material-symbols-outlined">bolt</span>
+        Envoyer un test
+      </h2>
+      <p class="page__field-hint">Déclenche un appel réel vers votre URL configurée, signé avec votre secret.</p>
+      <app-ui-button variant="primary" icon="send" iconPosition="left" [disabled]="testing()" (click)="sendPing()">
+        {{ testing() ? 'Envoi...' : 'Ping' }}
+      </app-ui-button>
+
+      @if (testResult(); as result) {
+        <div class="test-result" [class.test-result--error]="!result.success">
+          <app-ui-badge [tone]="result.success ? 'success' : 'error'">
+            {{ result.success ? '200 OK' : 'Échec' }}
+          </app-ui-badge>
+          <span>{{ result.message }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="page__card" uiReveal [uiRevealDelay]="180">
+    <div class="page__card-head">
+      <h2>Historique de livraison</h2>
+    </div>
+    <p class="page__field-hint">
+      Pas encore disponible : le backend n'expose actuellement aucun endpoint pour consulter l'historique
+      des appels webhook. À ajouter côté API pour activer cette section (ex: GET /v1/webhook/history).
+    </p>
+  </div>
+</div>

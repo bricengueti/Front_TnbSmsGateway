@@ -1,0 +1,25 @@
+@use 'tokens' as t;
+
+.ui-card {
+  background: t.$color-surface;
+  border: 1px solid t.$color-border;
+  border-radius: t.$radius-xl;
+  box-shadow: t.$shadow-sm;
+  transition: box-shadow t.$transition-base, transform t.$transition-base;
+
+  &--pad-sm { padding: t.$space-md; }
+  &--pad-md { padding: t.$space-lg; }
+  &--pad-lg { padding: t.$space-xl; }
+
+  &--elevated {
+    box-shadow: t.$shadow-md;
+    &:hover { box-shadow: t.$shadow-lg; transform: translateY(-2px); }
+  }
+
+  &--highlight {
+    background: t.$color-primary;
+    border-color: t.$color-primary;
+    color: t.$color-text-on-primary;
+    box-shadow: t.$shadow-xl;
+  }
+}

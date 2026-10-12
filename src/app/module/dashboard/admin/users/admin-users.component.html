@@ -1,0 +1,168 @@
+<div class="page">
+  <div class="page__head">
+    <div>
+      <h1><span class="page__admin-tag">ADMIN</span> Gestion des Utilisateurs</h1>
+      <p>Supervisez les comptes, leurs devices et clés API.</p>
+    </div>
+  </div>
+
+  <div class="page__metrics">
+    <app-ui-metric-card uiReveal label="Utilisateurs" [value]="users().length.toString()" icon="group" tone="primary" />
+    <app-ui-metric-card uiReveal [uiRevealDelay]="80" label="Actifs" [value]="activeUserCount.toString()" icon="check_circle" tone="success" />
+    <app-ui-metric-card uiReveal [uiRevealDelay]="160" label="Suspendus" [value]="suspendedUserCount.toString()" icon="block" tone="error" />
+  </div>
+
+  <div class="users-layout">
+    <div class="page__card users-layout__list" uiReveal>
+      <div class="users-toolbar">
+        <div class="page__field users-toolbar__search">
+          <input type="text" placeholder="Rechercher un utilisateur..." [ngModel]="search()" (ngModelChange)="search.set($event)" />
+        </div>
+      </div>
+
+      <div class="page__table-wrap">
+        <table class="page__table">
+          <thead>
+            <tr>
+              <th>Utilisateur</th>
+              <th>Devices / Clés</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (u of filteredUsers; track u.id) {
+              <tr class="users-row" [class.users-row--active]="selectedUser()?.id === u.id" (click)="selectUser(u.id)">
+                <td>
+                  <div class="users-row__identity">
+                    <app-ui-avatar [name]="u.email" size="sm" />
+                    <div>
+                      <strong>{{ u.companyName || u.email }}</strong>
+                      <span>{{ u.email }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="users-row__quota">{{ u.deviceCount }} device(s) · {{ u.apiKeyCount }} clé(s)</span>
+                </td>
+                <td>
+                  <app-ui-badge [tone]="u.status === 'ACTIVE' ? 'success' : 'error'">
+                    {{ u.status === 'ACTIVE' ? 'Actif' : 'Suspendu' }}
+                  </app-ui-badge>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    @if (selectedUser(); as u) {
+      <div class="page__card user-detail" uiReveal [uiRevealDelay]="100">
+        <div class="user-detail__banner"></div>
+        <div class="user-detail__head">
+          <app-ui-avatar [name]="u.email" size="lg" />
+        </div>
+        <h2>{{ u.companyName || u.email }}</h2>
+        <div class="user-detail__meta">
+          <span><span class="material-symbols-outlined">mail</span> {{ u.email }}</span>
+          @if (u.isAdmin) { <span><span class="material-symbols-outlined">shield</span> Compte administrateur</span> }
+        </div>
+
+        <app-ui-tabs [tabs]="tabs" [activeId]="activeTab()" (activeIdChange)="activeTab.set($event)" />
+
+        @if (activeTab() === 'overview') {
+          <div class="user-detail__section">
+            @if (u.poolQuota) {
+              <div class="quota-block">
+                <div class="quota-block__row">
+                  <span>Quota POOL — {{ u.poolQuota.planName }}</span>
+                  <span>
+                    @if (u.poolQuota.unlimited) { Illimité }
+                    @else { <strong>{{ u.poolQuota.smsSentInPeriod }}</strong> / {{ u.poolQuota.smsQuota }} SMS }
+                  </span>
+                </div>
+                @if (!u.poolQuota.unlimited) {
+                  <app-ui-progress-bar [value]="poolPercent(u)" tone="primary" />
+                }
+                @if (u.poolQuota.periodEndsAt) {
+                  <p class="quota-block__expiry" [class.quota-block__expiry--expired]="u.poolQuota.expired">
+                    <span class="material-symbols-outlined">{{ u.poolQuota.expired ? 'error' : 'event' }}</span>
+                    {{ u.poolQuota.expired ? 'Expiré le' : 'Valable jusqu\'au' }} {{ u.poolQuota.periodEndsAt | date:'dd MMM yyyy' }}
+                  </p>
+                }
+              </div>
+            }
+            @if (u.personalQuota) {
+              <div class="quota-block">
+                <div class="quota-block__row">
+                  <span>Quota PERSONAL — {{ u.personalQuota.planName }}</span>
+                  <span>
+                    @if (u.personalQuota.unlimited) { Illimité }
+                    @else { <strong>{{ u.personalQuota.currentDeviceCount }}</strong> / {{ u.personalQuota.quantityDevices }} devices }
+                  </span>
+                </div>
+                @if (!u.personalQuota.unlimited) {
+                  <app-ui-progress-bar [value]="personalPercent(u)" tone="warning" />
+                }
+                @if (u.personalQuota.periodEndsAt) {
+                  <p class="quota-block__expiry" [class.quota-block__expiry--expired]="u.personalQuota.expired">
+                    <span class="material-symbols-outlined">{{ u.personalQuota.expired ? 'error' : 'event' }}</span>
+                    {{ u.personalQuota.expired ? 'Expiré le' : 'Valable jusqu\'au' }} {{ u.personalQuota.periodEndsAt | date:'dd MMM yyyy' }}
+                  </p>
+                }
+              </div>
+            }
+            @if (!u.poolQuota && !u.personalQuota) {
+              <p class="page__field-hint">Aucun quota assigné à ce compte.</p>
+            }
+
+            <app-ui-button
+              [variant]="u.status === 'ACTIVE' ? 'secondary' : 'primary'"
+              [fullWidth]="true"
+              (click)="toggleSuspend()">
+              {{ u.status === 'ACTIVE' ? 'Suspendre ce compte' : 'Réactiver ce compte' }}
+            </app-ui-button>
+          </div>
+        }
+
+        @if (activeTab() === 'keys') {
+          <div class="user-detail__section">
+            @if (u.apiKeys.length) {
+              @for (k of u.apiKeys; track k.id) {
+                <div class="mini-row">
+                  <span class="material-symbols-outlined">key</span>
+                  <div class="mini-row__text">
+                    <strong>{{ k.label }}</strong>
+                    <span class="page__table-mono">{{ k.keyPrefix }}</span>
+                  </div>
+                  <app-ui-badge [tone]="k.routingMode === 'MANAGED_POOL' ? 'accent' : 'neutral'">{{ k.routingMode }}</app-ui-badge>
+                </div>
+              }
+            } @else {
+              <p class="page__field-hint">Aucune clé API pour cet utilisateur.</p>
+            }
+          </div>
+        }
+
+        @if (activeTab() === 'devices') {
+          <div class="user-detail__section">
+            @if (u.devices.length) {
+              @for (d of u.devices; track d.id) {
+                <div class="mini-row">
+                  <span class="material-symbols-outlined">smartphone</span>
+                  <div class="mini-row__text">
+                    <strong>{{ d.label }}</strong>
+                    <span>{{ d.type }}</span>
+                  </div>
+                  <span class="status-dot" [class.status-dot--online]="d.status === 'ONLINE'"></span>
+                </div>
+              }
+            } @else {
+              <p class="page__field-hint">Aucun appareil connecté.</p>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

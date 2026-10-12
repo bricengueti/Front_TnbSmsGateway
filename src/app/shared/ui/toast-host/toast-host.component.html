@@ -1,0 +1,11 @@
+<div class="toast-host">
+  @for (n of notifications.notifications(); track n.id) {
+    <div class="toast" [ngClass]="'toast--' + n.tone">
+      <span class="material-symbols-outlined">{{ iconFor(n.tone) }}</span>
+      <span class="toast__message">{{ n.message }}</span>
+      <button type="button" class="toast__close" (click)="notifications.dismiss(n.id)">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+  }
+</div>

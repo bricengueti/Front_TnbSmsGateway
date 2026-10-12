@@ -1,0 +1,12 @@
+<div class="ui-alert" [ngClass]="'ui-alert--' + tone">
+  <span class="material-symbols-outlined ui-alert__icon">{{ icon }}</span>
+  <div class="ui-alert__text">
+    <p class="ui-alert__title">{{ title }}</p>
+    @if (description) { <p class="ui-alert__desc">{{ description }}</p> }
+  </div>
+  @if (actionLabel) {
+    <app-ui-button variant="primary" size="sm" [icon]="actionIcon" iconPosition="left">
+      {{ actionLabel }}
+    </app-ui-button>
+  }
+</div>

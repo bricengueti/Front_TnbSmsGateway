@@ -1,0 +1,17 @@
+<div class="ui-faq">
+  @for (item of items; track item.question; let i = $index) {
+    <div class="ui-faq__item">
+      <button class="ui-faq__question" type="button" (click)="toggle(i)">
+        <span>{{ item.question }}</span>
+        <span class="material-symbols-outlined ui-faq__chevron" [class.ui-faq__chevron--open]="openIndex() === i">
+          expand_more
+        </span>
+      </button>
+      <div class="ui-faq__answer-wrap" [class.ui-faq__answer-wrap--open]="openIndex() === i">
+        <div class="ui-faq__answer">
+          <p>{{ item.answer }}</p>
+        </div>
+      </div>
+    </div>
+  }
+</div>

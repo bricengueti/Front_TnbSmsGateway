@@ -1,0 +1,12 @@
+<div class="ui-tabs" role="tablist">
+  @for (tab of tabs; track tab.id) {
+    <button
+      type="button"
+      role="tab"
+      class="ui-tabs__item"
+      [class.ui-tabs__item--active]="activeId === tab.id"
+      (click)="select(tab.id)">
+      {{ tab.label }}
+    </button>
+  }
+</div>

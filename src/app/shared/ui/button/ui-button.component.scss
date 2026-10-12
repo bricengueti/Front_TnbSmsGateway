@@ -1,0 +1,72 @@
+@use 'tokens' as t;
+
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: t.$space-sm;
+  border: 1px solid transparent;
+  border-radius: t.$radius-md;
+  font-family: t.$font-body;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: transform t.$transition-fast, box-shadow t.$transition-fast, background t.$transition-fast, color t.$transition-fast;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &__icon { font-size: 18px; }
+
+  // --- Tailles ---
+  &--sm { padding: t.$space-xs t.$space-md; font-size: t.$fs-body-sm; }
+  &--md { padding: t.$space-sm t.$space-xl; font-size: t.$fs-label-md; }
+  &--lg { padding: t.$space-md t.$space-2xl; font-size: t.$fs-body-lg; }
+
+  &--full { width: 100%; }
+
+  // --- Variantes ---
+  &--primary {
+    background: t.$color-primary;
+    color: t.$color-text-on-primary;
+    box-shadow: t.$shadow-sm;
+
+    &:hover:not(:disabled) {
+      background: t.$color-primary-dark;
+      box-shadow: t.$shadow-md;
+      transform: translateY(-1px);
+    }
+  }
+
+  &--secondary {
+    background: t.$color-surface;
+    color: t.$color-text;
+    border-color: t.$color-border;
+    box-shadow: t.$shadow-sm;
+
+    &:hover:not(:disabled) {
+      box-shadow: t.$shadow-md;
+      border-color: t.$color-primary;
+      color: t.$color-primary;
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: t.$color-text-secondary;
+
+    &:hover:not(:disabled) { color: t.$color-primary; }
+  }
+
+  &--inverse {
+    background: t.$color-surface;
+    color: t.$color-primary;
+
+    &:hover:not(:disabled) {
+      transform: scale(1.05);
+      box-shadow: t.$shadow-lg;
+    }
+  }
+}

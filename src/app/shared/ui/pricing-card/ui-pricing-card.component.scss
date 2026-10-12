@@ -1,0 +1,78 @@
+@use 'tokens' as t;
+
+.ui-pricing {
+  position: relative;
+  background: t.$color-surface;
+  border: 1px solid t.$color-border;
+  border-radius: t.$radius-xl;
+  box-shadow: t.$shadow-md;
+  padding: t.$space-xl;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-lg;
+  height: 100%;
+
+  &__badge {
+    position: absolute;
+    top: -14px; right: t.$space-lg;
+    background: t.$color-accent;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: t.$space-xs t.$space-md;
+    border-radius: t.$radius-full;
+    box-shadow: t.$shadow-sm;
+  }
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: t.$space-md;
+  }
+
+  &__name { font-size: t.$fs-headline-sm; font-weight: 600; }
+  &__subtitle { font-size: t.$fs-body-sm; color: t.$color-text-secondary; margin-top: t.$space-xs; }
+
+  &__price { text-align: right; white-space: nowrap; }
+  &__amount { font-family: t.$font-heading; font-size: t.$fs-headline-lg; font-weight: 700; }
+  &__period { font-size: t.$fs-body-sm; color: t.$color-text-secondary; display: block; }
+  &__strike {
+    display: block;
+    text-decoration: line-through;
+    opacity: 0.6;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  &__features {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex; flex-direction: column;
+    gap: t.$space-sm;
+
+    li {
+      display: flex; align-items: center; gap: t.$space-sm;
+      font-size: t.$fs-body-sm;
+      .material-symbols-outlined { font-size: 18px; color: t.$color-success; }
+    }
+  }
+
+  &__cta { margin-top: auto; }
+
+  // Variante mise en avant (fond bleu, ex: pack Pro)
+  &--primary {
+    background: t.$color-primary;
+    border-color: t.$color-primary;
+    color: #fff;
+    transform: scale(1.02);
+
+    .ui-pricing__subtitle { color: rgba(255,255,255,0.8); }
+    .ui-pricing__amount, .ui-pricing__name { color: #fff; }
+    .ui-pricing__period { color: rgba(255,255,255,0.8); }
+    .ui-pricing__features li { color: rgba(255,255,255,0.92); }
+    .ui-pricing__features li .material-symbols-outlined { color: #fff; }
+  }
+}

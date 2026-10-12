@@ -1,0 +1,42 @@
+@use 'tokens' as t;
+
+.ui-feature {
+  background: t.$color-surface;
+  border-radius: t.$radius-xl;
+  box-shadow: t.$shadow-sm;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-md;
+  transition: box-shadow t.$transition-base;
+
+  &:hover { box-shadow: t.$shadow-md; }
+
+  &--large { padding: t.$space-xl; min-height: 220px; justify-content: center; }
+  &--small { padding: t.$space-lg; justify-content: space-between; }
+
+  &__icon {
+    width: 40px; height: 40px;
+    border-radius: t.$radius-md;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    font-size: t.$fs-label-md;
+    font-weight: 700;
+    margin-bottom: t.$space-xs;
+  }
+
+  &__desc {
+    font-size: t.$fs-body-sm;
+    line-height: t.$lh-body-sm;
+    color: t.$color-text-secondary;
+  }
+
+  &--primary .ui-feature__icon { background: t.$color-primary-light; color: t.$color-primary; }
+  &--accent  .ui-feature__icon { background: t.$color-accent-light; color: t.$color-accent-dark; }
+  &--teal    .ui-feature__icon { background: rgba(27, 94, 90, 0.1); color: t.$color-teal; }
+
+  &--large .ui-feature__title { font-size: t.$fs-headline-sm; }
+  &--large .ui-feature__desc { max-width: 380px; }
+}

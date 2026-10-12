@@ -1,0 +1,61 @@
+@use 'tokens' as t;
+
+.ui-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: t.$space-lg;
+  animation: ui-modal-fade 200ms ease;
+}
+
+@keyframes ui-modal-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ui-modal-pop {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.ui-modal {
+  background: t.$color-surface;
+  border-radius: t.$radius-xl;
+  box-shadow: t.$shadow-xl;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: ui-modal-pop 240ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  &--sm { max-width: 420px; }
+  &--md { max-width: 560px; }
+  &--lg { max-width: 780px; }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: t.$space-lg;
+    border-bottom: 1px solid t.$color-border;
+
+    h3 { font-size: t.$fs-headline-sm; }
+  }
+
+  &__close {
+    background: transparent;
+    border: none;
+    color: t.$color-text-secondary;
+    display: flex;
+    padding: t.$space-xs;
+    border-radius: t.$radius-md;
+    transition: background 150ms ease;
+    &:hover { background: t.$color-surface-alt; }
+  }
+
+  &__body { padding: t.$space-lg; }
+}

@@ -1,0 +1,93 @@
+<div class="page">
+  <div class="page__head">
+    <div>
+      <h1>Clés API</h1>
+      <p>Gérez vos clés API pour authentifier vos requêtes vers TNB Gateway. Conservez-les en sécurité et ne les exposez jamais côté client.</p>
+    </div>
+    <app-ui-button variant="primary" icon="add" iconPosition="left" (click)="openCreate()">
+      Créer une nouvelle clé
+    </app-ui-button>
+  </div>
+
+  <div class="page__metrics">
+    <app-ui-metric-card uiReveal label="Clés actives" [value]="keys().length.toString()" icon="key" tone="primary" />
+  </div>
+
+  <div class="page__card" uiReveal>
+    <div class="page__table-wrap">
+      <table class="page__table">
+        <thead>
+          <tr>
+            <th>Nom de la clé</th>
+            <th>Préfixe</th>
+            <th>Scope</th>
+            <th>Créée le</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (k of keys(); track k.id) {
+            <tr>
+              <td><strong>{{ k.label }}</strong></td>
+              <td class="page__table-mono">{{ k.prefix }}</td>
+              <td><app-ui-badge tone="info">{{ k.scope }}</app-ui-badge></td>
+              <td>{{ k.createdAt | date:'dd MMM yyyy' }}</td>
+              <td class="page__table-actions">
+                <button type="button" class="page__icon-btn page__icon-btn--danger" title="Révoquer" (click)="revoke(k.id)">
+                  <span class="material-symbols-outlined">block</span>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      @if (!keys().length) {
+        <p class="page__field-hint" style="padding: 16px;">Aucune clé API pour le moment.</p>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Modale de création -->
+<app-ui-modal [(open)]="createModalOpen" title="Créer une nouvelle clé API" width="sm">
+  <div class="page__form-grid">
+    <div class="page__field">
+      <label for="key-label">Nom descriptif</label>
+      <input id="key-label" type="text" placeholder="ex: Production Mobile App" [(ngModel)]="form.label" />
+    </div>
+    <div class="page__field">
+      <label for="key-scope">Scope</label>
+      <select id="key-scope" [(ngModel)]="form.scope">
+        <option value="FULL">FULL — lecture et écriture</option>
+        <option value="SEND_ONLY">SEND_ONLY — envoi uniquement</option>
+        <option value="READ_ONLY">READ_ONLY — lecture seule</option>
+      </select>
+    </div>
+    <div class="page__field">
+      <label for="key-routing">Mode de routage</label>
+      <select id="key-routing" [(ngModel)]="form.routingMode">
+        <option value="OWN_DEVICES">OWN_DEVICES — vos devices connectés</option>
+        <option value="MANAGED_POOL">MANAGED_POOL — pool partagé TNB</option>
+      </select>
+      <span class="page__field-hint">MANAGED_POOL nécessite qu'un admin vous assigne un pack, sinon la clé est bloquée.</span>
+    </div>
+    <app-ui-button variant="primary" [fullWidth]="true" (click)="submitCreate()">Créer la clé</app-ui-button>
+  </div>
+</app-ui-modal>
+
+<!-- Modale de révélation (une seule fois) -->
+<app-ui-modal [(open)]="revealModalOpen" title="Clé créée avec succès" width="sm">
+  <div class="page__form-grid">
+    <div class="reveal-warning">
+      <span class="material-symbols-outlined">warning</span>
+      Copiez cette clé maintenant — elle ne sera plus jamais affichée en clair.
+    </div>
+    <div class="reveal-key">
+      <code>{{ createdKey()?.apiKey }}</code>
+      <button type="button" (click)="copyKey()">
+        <span class="material-symbols-outlined">{{ copied() ? 'check' : 'content_copy' }}</span>
+      </button>
+    </div>
+    <app-ui-button variant="secondary" [fullWidth]="true" (click)="revealModalOpen.set(false)">J'ai copié ma clé</app-ui-button>
+  </div>
+</app-ui-modal>

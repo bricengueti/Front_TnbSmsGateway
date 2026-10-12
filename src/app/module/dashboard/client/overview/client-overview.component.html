@@ -1,0 +1,109 @@
+<div class="page">
+
+  <div class="page__metrics">
+    <app-ui-metric-card
+      uiReveal
+      label="SMS envoyés (total)"
+      [value]="(stats()?.totalSent ?? 0) | number:'1.0-0':'fr-FR'"
+      icon="send"
+      tone="primary" />
+
+    <app-ui-metric-card
+      uiReveal
+      [uiRevealDelay]="80"
+      label="Taux de livraison"
+      [value]="deliveryRate().toString()"
+      unit="%"
+      icon="verified"
+      tone="success" />
+
+    <app-ui-metric-card
+      uiReveal
+      [uiRevealDelay]="160"
+      label="Envoyés aujourd'hui"
+      [value]="(stats()?.sentToday ?? 0) | number:'1.0-0':'fr-FR'"
+      icon="today"
+      tone="default" />
+
+    <app-ui-metric-card
+      uiReveal
+      [uiRevealDelay]="240"
+      label="Devices connectés"
+      [value]="devicesOnline().toString()"
+      [unit]="'/ ' + devicesTotal()"
+      icon="smartphone"
+      tone="default" />
+
+    @if (featuredQuota(); as fq) {
+      <app-ui-metric-card
+        uiReveal
+        [uiRevealDelay]="320"
+        [label]="(fq.type === 'POOL' ? 'Quota SMS restant' : 'Devices restants') + ' — ' + fq.planName"
+        [value]="fq.unlimited
+          ? 'Illimité'
+          : (fq.type === 'POOL'
+              ? ((fq.smsQuota ?? 0) - (fq.smsSentInPeriod ?? 0) | number:'1.0-0':'fr-FR')
+              : ((fq.quantityDevices ?? 0) - (fq.currentDeviceCount ?? 0)).toString())"
+        [unit]="fq.unlimited ? '' : (fq.type === 'POOL' ? ('/ ' + (fq.smsQuota | number:'1.0-0':'fr-FR')) : ('/ ' + fq.quantityDevices))"
+        icon="dns"
+        [tone]="fq.expired ? 'error' : 'warning'"
+        [emphasis]="true">
+        @if (!fq.unlimited) {
+          <app-ui-progress-bar [value]="featuredQuotaPercent()" [tone]="fq.expired ? 'error' : 'warning'" height="sm" />
+        }
+        @if (fq.expired) {
+          <span class="overview-quota-expired">Pack expiré — à renouveler</span>
+        }
+      </app-ui-metric-card>
+    }
+  </div>
+
+  <div class="page__card" uiReveal>
+    <div class="page__card-head">
+      <div>
+        <h2>Logs Récents</h2>
+        <p>Trace en temps réel des 5 derniers messages traités.</p>
+      </div>
+      <a class="page__link" routerLink="/dashboard/client/messages">Voir tout l'historique <span class="material-symbols-outlined">arrow_forward</span></a>
+    </div>
+
+    <div class="page__table-wrap">
+      <table class="page__table">
+        <thead>
+          <tr>
+            <th>Horodatage</th>
+            <th>Destinataire</th>
+            <th>Contenu</th>
+            <th>Routage</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (loading()) {
+            @for (i of [1,2,3,4,5]; track i) {
+              <tr class="skeleton-row">
+                <td><span class="skeleton skeleton--sm"></span></td>
+                <td><span class="skeleton skeleton--md"></span></td>
+                <td><span class="skeleton skeleton--lg"></span></td>
+                <td><span class="skeleton skeleton--sm"></span></td>
+                <td><span class="skeleton skeleton--sm"></span></td>
+              </tr>
+            }
+          } @else {
+            @for (m of recentMessages(); track m.messageId) {
+              <tr>
+                <td class="page__table-mono">{{ m.createdAt | date:'HH:mm:ss' }}</td>
+                <td class="page__table-mono">{{ m.toNumber }}</td>
+                <td class="page__table-truncate">{{ m.body }}</td>
+                <td>{{ m.routingMode === 'MANAGED_POOL' ? 'Pool partagé' : 'Mon device' }}</td>
+                <td>
+                  <app-ui-badge [tone]="statusTone(m.status)">{{ m.status }}</app-ui-badge>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

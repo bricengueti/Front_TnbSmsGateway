@@ -1,0 +1,42 @@
+<header class="site-header">
+  <div class="site-header__inner container">
+    <a routerLink="/product" class="site-header__brand">
+      <img src="assets/logo.png" alt="TNB SmsGateway" class="site-header__logo" />
+      <span class="site-header__name">TNB SmsGateway</span>
+    </a>
+
+    <nav class="site-header__nav">
+      <a routerLink="/product" routerLinkActive="is-active">Produit</a>
+      <a routerLink="/rate" routerLinkActive="is-active">Tarifs</a>
+      <a routerLink="/documentation" routerLinkActive="is-active">Documentation</a>
+    </nav>
+
+    <div class="site-header__actions">
+      @if (authService.isAuthenticated()) {
+        <app-ui-button variant="primary" size="md" icon="dashboard" iconPosition="left" routerLink="/dashboard/client/overview">
+          Tableau de bord
+        </app-ui-button>
+      } @else {
+        <a routerLink="/login" class="site-header__login">Connexion</a>
+        <app-ui-button variant="primary" size="md" routerLink="/register">Commencer</app-ui-button>
+      }
+    </div>
+
+    <button class="site-header__burger" type="button" (click)="toggleMenu()" aria-label="Menu">
+      <span class="material-symbols-outlined">{{ menuOpen ? 'close' : 'menu' }}</span>
+    </button>
+  </div>
+
+  @if (menuOpen) {
+    <nav class="site-header__mobile-nav">
+      <a routerLink="/product" (click)="toggleMenu()">Produit</a>
+      <a routerLink="/rate" (click)="toggleMenu()">Tarifs</a>
+      <a routerLink="/documentation" (click)="toggleMenu()">Documentation</a>
+      @if (authService.isAuthenticated()) {
+        <a routerLink="/dashboard/client/overview" (click)="toggleMenu()">Tableau de bord</a>
+      } @else {
+        <a routerLink="/login" (click)="toggleMenu()">Connexion</a>
+      }
+    </nav>
+  }
+</header>

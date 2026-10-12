@@ -1,0 +1,139 @@
+<div class="page">
+  <div class="page__head">
+    <div>
+      <h1>Facturation</h1>
+      <p>Choisissez un pack de crédits SMS (POOL) ou un plafond de devices (PERSONAL).</p>
+    </div>
+  </div>
+
+  <div class="page__card" uiReveal>
+    <div class="page__card-head">
+      <h2>Mon quota</h2>
+    </div>
+
+    @if (loadingQuota()) {
+      <div class="quota-grid">
+        <div class="quota-tile quota-tile--skeleton">
+          <span class="skeleton skeleton--md"></span>
+          <span class="skeleton skeleton--lg"></span>
+        </div>
+        <div class="quota-tile quota-tile--skeleton">
+          <span class="skeleton skeleton--md"></span>
+          <span class="skeleton skeleton--lg"></span>
+        </div>
+      </div>
+    } @else {
+      <div class="quota-grid">
+        @if (quota()?.poolQuota; as pq) {
+          <div class="quota-tile">
+            <div class="quota-tile__head">
+              <span class="quota-tile__type">POOL — {{ pq.planName }}</span>
+              <app-ui-badge [tone]="pq.expired ? 'error' : 'info'">{{ pq.expired ? 'Expiré' : 'Crédits SMS' }}</app-ui-badge>
+            </div>
+            @if (pq.unlimited) {
+              <p class="quota-tile__value">Illimité</p>
+            } @else {
+              <p class="quota-tile__value">
+                <strong>{{ pq.smsSentInPeriod | number:'1.0-0':'fr-FR' }}</strong> / {{ pq.smsQuota | number:'1.0-0':'fr-FR' }} SMS
+              </p>
+              <app-ui-progress-bar [value]="poolPercent(pq)" [tone]="pq.expired ? 'error' : 'primary'" />
+              <p class="quota-tile__remaining">{{ (pq.smsQuota ?? 0) - (pq.smsSentInPeriod ?? 0) | number:'1.0-0':'fr-FR' }} SMS restants</p>
+            }
+            @if (pq.periodEndsAt) {
+              <p class="quota-tile__expiry" [class.quota-tile__expiry--expired]="pq.expired">
+                {{ pq.expired ? 'Expiré le' : 'Valable jusqu\'au' }} {{ pq.periodEndsAt | date:'dd MMM yyyy' }}
+              </p>
+            }
+          </div>
+        }
+
+        @if (quota()?.personalQuota; as pq) {
+          <div class="quota-tile">
+            <div class="quota-tile__head">
+              <span class="quota-tile__type">PERSONAL — {{ pq.planName }}</span>
+              <app-ui-badge [tone]="pq.expired ? 'error' : 'accent'">{{ pq.expired ? 'Expiré' : 'Devices' }}</app-ui-badge>
+            </div>
+            @if (pq.unlimited) {
+              <p class="quota-tile__value">Illimité</p>
+            } @else {
+              <p class="quota-tile__value">
+                <strong>{{ pq.currentDeviceCount }}</strong> / {{ pq.quantityDevices }} devices connectés
+              </p>
+              <app-ui-progress-bar [value]="personalPercent(pq)" [tone]="pq.expired ? 'error' : 'warning'" />
+              <p class="quota-tile__remaining">{{ (pq.quantityDevices ?? 0) - (pq.currentDeviceCount ?? 0) }} emplacement(s) restant(s)</p>
+            }
+            @if (pq.periodEndsAt) {
+              <p class="quota-tile__expiry" [class.quota-tile__expiry--expired]="pq.expired">
+                {{ pq.expired ? 'Expiré le' : 'Valable jusqu\'au' }} {{ pq.periodEndsAt | date:'dd MMM yyyy' }}
+              </p>
+            }
+          </div>
+        }
+
+        @if (!quota()?.poolQuota && !quota()?.personalQuota) {
+          <p class="page__field-hint">Aucun pack assigné pour le moment — choisissez-en un ci-dessous.</p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="page__card" uiReveal [uiRevealDelay]="80">
+    <div class="page__card-head">
+      <h2>Packs disponibles</h2>
+    </div>
+
+    @if (loadingPlans()) {
+      <div class="plans-grid">
+        @for (i of [1,2,3]; track i) {
+          <div class="plan-tile plan-tile--skeleton">
+            <span class="skeleton skeleton--md"></span>
+            <span class="skeleton skeleton--lg"></span>
+            <span class="skeleton skeleton--sm"></span>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="plans-grid">
+        @for (plan of plans(); track plan.id) {
+          <div class="plan-tile" [class.plan-tile--inactive]="!plan.active">
+            <div class="plan-tile__head">
+              <span class="plan-tile__type">{{ plan.type }}</span>
+              @if (!plan.active) {
+                <app-ui-badge tone="neutral">Indisponible</app-ui-badge>
+              }
+            </div>
+            <h3>{{ plan.name }}</h3>
+            <p>{{ plan.description }}</p>
+            <p class="plan-tile__limit">{{ limitLabel(plan) }}</p>
+            <div class="plan-tile__price">{{ plan.price | number:'1.0-0':'fr-FR' }} <span>XAF</span></div>
+            <app-ui-button
+              variant="primary"
+              [fullWidth]="true"
+              [disabled]="!plan.active || purchasingId() === plan.id"
+              (click)="purchase(plan)">
+              {{ purchasingId() === plan.id ? 'Initiation...' : (plan.active ? 'Acheter' : 'Indisponible') }}
+            </app-ui-button>
+          </div>
+        }
+      </div>
+      @if (!plans().length) {
+        <p class="page__field-hint">Aucun pack enregistré pour le moment.</p>
+      }
+    }
+
+    @if (errorMessage()) {
+      <p class="auth-card__error" style="margin-top: 16px;">{{ errorMessage() }}</p>
+    }
+
+    @if (paymentUrl(); as url) {
+      <div class="payment-result">
+        <span class="material-symbols-outlined">check_circle</span>
+        <div>
+          <strong>Paiement initié avec succès</strong>
+          <p>Ouvrez cette URL pour finaliser le paiement — le pack sera appliqué automatiquement dès confirmation :</p>
+          <a [href]="url" target="_blank" rel="noopener">{{ url }}</a>
+        </div>
+      </div>
+    }
+  </div>
+</div>

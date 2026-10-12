@@ -1,0 +1,49 @@
+@use 'tokens' as t;
+
+.site-footer {
+  background: t.$color-teal;
+  color: rgba(255,255,255,0.85);
+  padding-top: t.$space-2xl;
+
+  &__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: t.$space-xl;
+    padding-bottom: t.$space-xl;
+
+    @media (min-width: 768px) {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
+  }
+
+  &__brand { display: flex; flex-direction: column; gap: t.$space-sm; }
+  &__logo { height: 32px; width: auto; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.9; }
+  &__tagline { font-size: t.$fs-body-sm; color: t.$color-accent; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  &__col {
+    display: flex;
+    flex-direction: column;
+    gap: t.$space-sm;
+    font-size: t.$fs-body-sm;
+
+    a { color: rgba(255,255,255,0.75); transition: color t.$transition-fast; }
+    a:hover { color: #fff; }
+  }
+
+  &__heading {
+    font-family: t.$font-heading;
+    font-weight: 700;
+    font-size: t.$fs-label-md;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #fff;
+    margin-bottom: t.$space-xs;
+  }
+
+  &__bottom {
+    padding: t.$space-lg 0;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    font-size: t.$fs-body-sm;
+    color: rgba(255,255,255,0.6);
+  }
+}

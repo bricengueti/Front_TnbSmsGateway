@@ -1,0 +1,15 @@
+@use 'tokens' as t;
+// La majorité du style vient de src/styles/_dashboard-patterns.scss (.page, .page__card...).
+// Ce fichier ne contient que les ajustements propres à cet écran.
+
+.overview-quota-expired {
+  display: block;
+  margin-top: t.$space-sm;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0,0,0,0.15);
+  padding: 2px t.$space-sm;
+  border-radius: t.$radius-sm;
+  width: fit-content;
+}

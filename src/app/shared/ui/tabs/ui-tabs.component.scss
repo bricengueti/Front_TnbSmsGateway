@@ -1,0 +1,35 @@
+@use 'tokens' as t;
+
+.ui-tabs {
+  display: flex;
+  gap: t.$space-lg;
+  border-bottom: 1px solid t.$color-border;
+
+  &__item {
+    position: relative;
+    background: transparent;
+    border: none;
+    padding: t.$space-sm 0;
+    font-size: t.$fs-body-sm;
+    font-weight: 600;
+    color: t.$color-text-secondary;
+    transition: color 200ms ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: -1px;
+      height: 2px;
+      background: t.$color-primary;
+      transform: scaleX(0);
+      transition: transform 220ms cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    &:hover { color: t.$color-text; }
+
+    &--active {
+      color: t.$color-primary;
+      &::after { transform: scaleX(1); }
+    }
+  }
+}

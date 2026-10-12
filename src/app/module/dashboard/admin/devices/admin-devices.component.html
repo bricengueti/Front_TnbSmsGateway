@@ -1,0 +1,94 @@
+<div class="page">
+  <div class="page__head">
+    <div>
+      <h1><span class="page__admin-tag">ADMIN</span> Gestion des Appareils</h1>
+      <p>Supervision de la flotte de devices toutes plateformes confondues.</p>
+    </div>
+    <app-ui-button variant="primary" icon="hub" iconPosition="left" (click)="openPoolPairModal()">
+      Générer un code POOL
+    </app-ui-button>
+  </div>
+
+  <div class="page__metrics">
+    <app-ui-metric-card uiReveal label="Flotte totale" [value]="fleet().length.toString()" icon="router" tone="primary" />
+    <app-ui-metric-card uiReveal [uiRevealDelay]="80" label="En ligne" [value]="onlineCount.toString()" icon="check_circle" tone="success" />
+    <app-ui-metric-card uiReveal [uiRevealDelay]="160" label="Contributeurs pool" [value]="poolCount.toString()" icon="hub" tone="default" />
+    <app-ui-metric-card uiReveal [uiRevealDelay]="240" label="Révoqués" [value]="revokedCount.toString()" icon="block" tone="error" />
+  </div>
+
+  <div class="page__card" uiReveal>
+    <div class="page__table-wrap">
+      <table class="page__table">
+        <thead>
+          <tr>
+            <th>Appareil &amp; propriétaire</th>
+            <th>Type</th>
+            <th>Statut</th>
+            <th>Disponible pour le pool</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (d of fleet(); track d.id) {
+            <tr>
+              <td>
+                <strong>{{ d.label }}</strong>
+                <span class="fleet-sub">{{ d.ownerEmail }}</span>
+              </td>
+              <td><app-ui-badge [tone]="d.type === 'POOL' ? 'accent' : 'neutral'">{{ d.type }}</app-ui-badge></td>
+              <td>
+                <app-ui-badge [tone]="statusTone(d.status)">{{ d.status }}</app-ui-badge>
+                <span class="fleet-sub">{{ d.lastHeartbeatAt ? (d.lastHeartbeatAt | date:'dd MMM, HH:mm') : 'Jamais connecté' }}</span>
+              </td>
+              <td>
+                <app-ui-toggle-switch
+                  [checked]="d.availableForPool"
+                  [ariaLabel]="'Disponible pour le pool — ' + d.label"
+                  (checkedChange)="togglePoolFallback(d, $event)" />
+              </td>
+              <td class="page__table-actions">
+                @if (!d.revoked) {
+                  <button type="button" class="page__icon-btn page__icon-btn--danger" title="Révoquer" (click)="revoke(d.id)">
+                    <span class="material-symbols-outlined">block</span>
+                  </button>
+                } @else {
+                  <app-ui-badge tone="neutral">Révoqué</app-ui-badge>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-ui-modal [(open)]="poolModalOpen" title="Contribuer un device au Pool partagé" width="sm">
+  <div class="pair-instructions">
+    <p>1. Installez l'application TNB Gateway sur le téléphone à contribuer au pool.</p>
+    <p>2. Saisissez le code ci-dessous dans l'écran de connexion de l'app.</p>
+
+    @if (generatingCode()) {
+      <div class="pair-code pair-code--loading">Génération du code...</div>
+    } @else if (alreadyActive()) {
+      <div class="auth-card__error">
+        Une intégration POOL est déjà active pour ce compte.
+      </div>
+      <app-ui-button variant="primary" icon="autorenew" iconPosition="left" [fullWidth]="true" (click)="regeneratePoolCode()">
+        Régénérer le code existant
+      </app-ui-button>
+    } @else if (pairingError()) {
+      <p class="auth-card__error">{{ pairingError() }}</p>
+    } @else if (pairingCode()) {
+      <div class="pair-code">{{ pairingCode() }}</div>
+      <p class="page__field-hint">
+        Ce code n'est affiché qu'une seule fois par le serveur. Notez-le maintenant.
+        Les devices pairés avec ce code deviennent disponibles pour servir les clients
+        en mode MANAGED_POOL, indépendamment de leur propriétaire.
+      </p>
+      <app-ui-button variant="secondary" icon="autorenew" iconPosition="left" [fullWidth]="true" (click)="regeneratePoolCode()">
+        Régénérer un nouveau code
+      </app-ui-button>
+    }
+  </div>
+</app-ui-modal>

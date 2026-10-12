@@ -1,0 +1,92 @@
+@use 'tokens' as t;
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  background: rgba(250, 250, 250, 0.85);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+
+  &__inner {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: t.$space-lg;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: t.$space-sm;
+    flex-shrink: 0;
+  }
+
+  &__logo { height: 32px; width: auto; object-fit: contain; }
+
+  &__name {
+    font-family: t.$font-heading;
+    font-weight: 700;
+    font-size: t.$fs-headline-sm;
+    color: t.$color-primary;
+  }
+
+  &__nav {
+    display: none;
+    align-items: center;
+    gap: t.$space-xl;
+
+    a {
+      font-size: t.$fs-body-sm;
+      font-weight: 500;
+      color: t.$color-text-secondary;
+      transition: color t.$transition-fast;
+
+      &:hover, &.is-active { color: t.$color-primary; }
+    }
+  }
+
+  &__actions {
+    display: none;
+    align-items: center;
+    gap: t.$space-lg;
+    flex-shrink: 0;
+  }
+
+  &__login {
+    font-size: t.$fs-label-md;
+    font-weight: 600;
+    color: t.$color-text-secondary;
+    &:hover { color: t.$color-primary; }
+  }
+
+  &__burger {
+    display: flex;
+    background: none;
+    border: none;
+    color: t.$color-text;
+    padding: t.$space-xs;
+  }
+
+  &__mobile-nav {
+    display: flex;
+    flex-direction: column;
+    padding: t.$space-md t.$space-lg t.$space-lg;
+    gap: t.$space-md;
+    background: t.$color-surface;
+    border-top: 1px solid t.$color-border;
+
+    a {
+      font-size: t.$fs-body-md;
+      font-weight: 500;
+      color: t.$color-text;
+    }
+  }
+
+  @media (min-width: 900px) {
+    &__nav, &__actions { display: flex; }
+    &__burger { display: none; }
+  }
+}

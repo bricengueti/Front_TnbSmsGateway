@@ -1,0 +1,146 @@
+/* Styles globaux — TNB SmsGateway
+ * Les tokens (couleurs, typo, espacements) vivent dans src/styles/_tokens.scss
+ * Ce fichier ne fait que consommer les tokens : ne pas coder de valeur en dur ici.
+ */
+@use 'tokens' as t;
+@use 'syntax-theme';
+@use 'dashboard-patterns';
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: t.$font-body;
+  font-size: t.$fs-body-md;
+  line-height: t.$lh-body-md;
+  color: t.$color-text;
+  background: t.$color-bg;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: t.$font-heading;
+  margin: 0;
+  color: t.$color-text;
+}
+
+p { margin: 0; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: t.$font-body;
+  cursor: pointer;
+}
+
+code, pre {
+  font-family: t.$font-mono;
+}
+
+img { max-width: 100%; display: block; }
+
+/* Material Symbols — nécessaire pour que la police d'icônes s'affiche
+   (le <link> Google Fonts dans index.html importe la police, cette classe
+   l'applique réellement aux <span class="material-symbols-outlined">). */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Conteneur de page centré, largeur max de marque */
+.container {
+  width: 100%;
+  max-width: t.$container-max;
+  margin: 0 auto;
+  padding: 0 t.$space-lg;
+}
+
+/* Utilitaires ponctuels utilisés par plusieurs pages du site vitrine */
+.text-secondary { color: t.$color-text-secondary; }
+.text-tertiary { color: t.$color-text-tertiary; }
+
+.section {
+  width: 100%;
+  padding: t.$space-3xl 0;
+}
+
+.section--tight { padding: t.$space-2xl 0; }
+
+.eyebrow {
+  font-family: t.$font-body;
+  font-size: t.$fs-label-md;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: t.$color-primary;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb {
+  background: t.$color-border;
+  border-radius: t.$radius-full;
+}
+
+/* Animations de marque — reprises telles quelles du prototype Google Stitch.
+   Ne pas ajouter d'autres animations globales sans mettre à jour cette liste. */
+@keyframes ui-bounce {
+  0%, 100% {
+    transform: translateY(-18%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes ui-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.ui-animate-bounce { animation: ui-bounce 1.6s infinite; }
+.ui-animate-pulse { animation: ui-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+/* Révélation au scroll (voir RevealOnScrollDirective) — fondu + léger
+   déplacement, jamais plus de 550ms, pour rester sobre et professionnel. */
+.ui-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 550ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ui-reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Micro-interaction universelle : léger enfoncement au clic sur tout
+   élément interactif, pour un feedback tactile discret et cohérent. */
+button:not(:disabled),
+.ui-btn:not(:disabled) {
+  transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease, color 150ms ease;
+}
+button:not(:disabled):active,
+.ui-btn:not(:disabled):active {
+  transform: scale(0.98);
+}

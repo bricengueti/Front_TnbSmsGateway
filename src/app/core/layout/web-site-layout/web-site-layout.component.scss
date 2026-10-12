@@ -1,0 +1,6 @@
+@use 'tokens' as t;
+
+.web-site-main {
+  min-height: 60vh;
+  background: t.$color-bg;
+}
